@@ -99,6 +99,8 @@ final class VendorPro_Marketplace
         require_once VENDORPRO_INCLUDES_DIR . 'class-database.php';
         require_once VENDORPRO_INCLUDES_DIR . 'class-vendor.php';
         require_once VENDORPRO_INCLUDES_DIR . 'class-commission.php';
+        require_once VENDORPRO_INCLUDES_DIR . 'class-reverse-withdrawal.php';
+        require_once VENDORPRO_INCLUDES_DIR . 'class-ai-assist.php';
         require_once VENDORPRO_INCLUDES_DIR . 'class-withdrawal.php';
         require_once VENDORPRO_INCLUDES_DIR . 'class-email.php';
         require_once VENDORPRO_INCLUDES_DIR . 'functions.php';
@@ -137,6 +139,8 @@ final class VendorPro_Marketplace
         VendorPro_Database::instance();
         VendorPro_Vendor::instance();
         VendorPro_Commission::instance();
+        VendorPro_Reverse_Withdrawal::instance();
+        VendorPro_AI_Assist::instance();
         VendorPro_Withdrawal::instance();
         VendorPro_Email::instance();
 

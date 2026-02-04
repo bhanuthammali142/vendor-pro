@@ -67,6 +67,11 @@ class VendorPro_Commission
             return false;
         }
 
+        // Allow other modules (like Reverse Withdrawal) to intercept
+        if (!apply_filters('vendorpro_should_process_commission', true, $order)) {
+            return false;
+        }
+
         // Check if commission already created
         if (get_post_meta($order_id, '_vendorpro_commission_created', true)) {
             return false;
