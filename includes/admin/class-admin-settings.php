@@ -131,9 +131,35 @@ class VendorPro_Admin_Settings
 
         switch ($tab) {
             case 'general':
-                update_option('vendorpro_vendor_registration', isset($_POST['vendorpro_vendor_registration']) ? 'yes' : 'no');
-                update_option('vendorpro_vendor_approval', isset($_POST['vendorpro_vendor_approval']) ? 'yes' : 'no');
-                update_option('vendorpro_vendors_per_page', intval($_POST['vendorpro_vendors_per_page']));
+                // Site Settings
+                update_option('vendorpro_admin_access', isset($_POST['vendorpro_admin_access']) ? 'yes' : 'no');
+                
+                // Flush rewriting rules if slug changes
+                $old_slug = get_option('vendorpro_store_url_slug', 'store');
+                $new_slug = sanitize_text_field($_POST['vendorpro_store_url_slug']);
+                if ($old_slug !== $new_slug) {
+                    update_option('vendorpro_flush_rewrite_rules', true);
+                }
+                update_option('vendorpro_store_url_slug', $new_slug);
+                
+                update_option('vendorpro_setup_wizard_logo', sanitize_text_field($_POST['vendorpro_setup_wizard_logo']));
+                update_option('vendorpro_setup_wizard_message', sanitize_textarea_field($_POST['vendorpro_setup_wizard_message']));
+                update_option('vendorpro_disable_welcome_wizard', isset($_POST['vendorpro_disable_welcome_wizard']) ? 'yes' : 'no');
+                update_option('vendorpro_data_clear', isset($_POST['vendorpro_data_clear']) ? 'yes' : 'no');
+                
+                // Vendor Store Settings
+                update_option('vendorpro_store_terms', isset($_POST['vendorpro_store_terms']) ? 'yes' : 'no');
+                update_option('vendorpro_store_products_per_page', intval($_POST['vendorpro_store_products_per_page']));
+                update_option('vendorpro_enable_address_fields', isset($_POST['vendorpro_enable_address_fields']) ? 'yes' : 'no');
+                
+                // Keep these for legacy or move them if we removed from UI? 
+                // We removed them from UI in the previous step (Allow Registration/Approval).
+                // But we should default them or hidden them. Let's assume they are effectively "Managed elsewhere" or we keep the old values if not posted.
+                // Actually, if we remove them from UI, we can't update them here via POST.
+                
+                // Product Page Settings
+                update_option('vendorpro_show_vendor_info', isset($_POST['vendorpro_show_vendor_info']) ? 'yes' : 'no');
+                update_option('vendorpro_enable_more_products_tab', isset($_POST['vendorpro_enable_more_products_tab']) ? 'yes' : 'no');
                 break;
 
             case 'selling':
@@ -238,32 +264,139 @@ class VendorPro_Admin_Settings
     private static function render_general_settings()
     {
         ?>
+        <div class="vendorpro-feature-intro">
+            <h3><?php _e('Site Settings', 'vendorpro'); ?></h3>
+            <p><?php _e('Configure your site settings and control access to your site.', 'vendorpro'); ?></p>
+        </div>
+
         <table class="form-table">
             <tr>
-                <th scope="row"><?php _e('Vendor Registration', 'vendorpro'); ?></th>
+                <th scope="row"><?php _e('Admin Area Access', 'vendorpro'); ?></th>
                 <td>
                     <label class="vendorpro-toggle">
-                        <input type="checkbox" name="vendorpro_vendor_registration" value="yes" <?php checked(get_option('vendorpro_vendor_registration', 'yes'), 'yes'); ?>>
+                        <input type="checkbox" name="vendorpro_admin_access" value="yes" <?php checked(get_option('vendorpro_admin_access', 'yes'), 'yes'); ?>>
                         <span class="slider round"></span>
                     </label>
-                    <p class="description"><?php _e('Allow users to register as vendors', 'vendorpro'); ?></p>
+                    <p class="description">
+                        <?php _e('Prevent vendors from accessing the wp-admin dashboard area.', 'vendorpro'); ?></p>
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php _e('Require Approval', 'vendorpro'); ?></th>
+                <th scope="row"><?php _e('Vendor Store URL', 'vendorpro'); ?></th>
                 <td>
-                    <label class="vendorpro-toggle">
-                        <input type="checkbox" name="vendorpro_vendor_approval" value="yes" <?php checked(get_option('vendorpro_vendor_approval', 'yes'), 'yes'); ?>>
-                        <span class="slider round"></span>
-                    </label>
-                    <p class="description"><?php _e('Manually approve new vendors before they can sell', 'vendorpro'); ?></p>
+                    <div style="display: flex; align-items: center;">
+                        <span
+                            style="background: #eee; padding: 6px 10px; border: 1px solid #ddd; border-right: 0; border-radius: 3px 0 0 3px; color: #555;"><?php echo home_url('/'); ?></span>
+                        <input type="text" name="vendorpro_store_url_slug"
+                            value="<?php echo esc_attr(get_option('vendorpro_store_url_slug', 'store')); ?>"
+                            class="regular-text" style="border-radius: 0 3px 3px 0;">
+                        <span
+                            style="background: #eee; padding: 6px 10px; border: 1px solid #ddd; border-left: 0; border-radius: 0 3px 3px 0; color: #555;">/[vendor-name]</span>
+                    </div>
+                    <p class="description"><?php _e('Define the vendor store URL.', 'vendorpro'); ?></p>
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php _e('Vendors Per Page', 'vendorpro'); ?></th>
+                <th scope="row"><?php _e('Vendor Setup Wizard Logo', 'vendorpro'); ?></th>
                 <td>
-                    <input type="number" name="vendorpro_vendors_per_page"
-                        value="<?php echo esc_attr(get_option('vendorpro_vendors_per_page', 12)); ?>" class="regular-text">
+                    <input type="text" name="vendorpro_setup_wizard_logo"
+                        value="<?php echo esc_attr(get_option('vendorpro_setup_wizard_logo')); ?>" class="regular-text"
+                        placeholder="Paste image URL">
+                    <button type="button" class="button"><?php _e('Choose File', 'vendorpro'); ?></button>
+                    <p class="description"><?php _e('Recommended logo size (270px X 90px).', 'vendorpro'); ?></p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php _e('Vendor Setup Wizard Message', 'vendorpro'); ?></th>
+                <td>
+                    <textarea name="vendorpro_setup_wizard_message" rows="3"
+                        class="large-text"><?php echo esc_textarea(get_option('vendorpro_setup_wizard_message', 'Thank you for choosing The Marketplace to power your online store!')); ?></textarea>
+                </td>
+            </tr>
+        </table>
+
+        <div class="vendorpro-section-divider"></div>
+
+        <table class="form-table">
+            <tr>
+                <th scope="row"><?php _e('Disable Welcome Wizard', 'vendorpro'); ?></th>
+                <td>
+                    <label class="vendorpro-toggle">
+                        <input type="checkbox" name="vendorpro_disable_welcome_wizard" value="yes" <?php checked(get_option('vendorpro_disable_welcome_wizard'), 'yes'); ?>>
+                        <span class="slider round"></span>
+                    </label>
+                    <p class="description"><?php _e('Disable welcome wizard for newly registered vendors', 'vendorpro'); ?></p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php _e('Data Clear', 'vendorpro'); ?></th>
+                <td>
+                    <label class="vendorpro-toggle">
+                        <input type="checkbox" name="vendorpro_data_clear" value="yes" <?php checked(get_option('vendorpro_data_clear'), 'yes'); ?>>
+                        <span class="slider round"></span>
+                    </label>
+                    <p class="description" style="color: #dc3232;">
+                        <?php _e('Delete all data and tables related to VendorPro when deleting the plugin.', 'vendorpro'); ?>
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        <h3><?php _e('Vendor Store Settings', 'vendorpro'); ?></h3>
+        <table class="form-table">
+            <tr>
+                <th scope="row"><?php _e('Store Terms and Conditions', 'vendorpro'); ?></th>
+                <td>
+                    <label class="vendorpro-toggle">
+                        <input type="checkbox" name="vendorpro_store_terms" value="yes" <?php checked(get_option('vendorpro_store_terms'), 'yes'); ?>>
+                        <span class="slider round"></span>
+                    </label>
+                    <p class="description"><?php _e('Enable terms and conditions for vendor stores', 'vendorpro'); ?></p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php _e('Store Products Per Page', 'vendorpro'); ?></th>
+                <td>
+                    <input type="number" name="vendorpro_store_products_per_page"
+                        value="<?php echo esc_attr(get_option('vendorpro_store_products_per_page', 12)); ?>"
+                        class="regular-text">
+                    <p class="description">
+                        <?php _e('Set how many products to display per page on the vendor store page.', 'vendorpro'); ?></p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php _e('Enable Address Fields', 'vendorpro'); ?></th>
+                <td>
+                    <label class="vendorpro-toggle">
+                        <input type="checkbox" name="vendorpro_enable_address_fields" value="yes" <?php checked(get_option('vendorpro_enable_address_fields'), 'yes'); ?>>
+                        <span class="slider round"></span>
+                    </label>
+                    <p class="description"><?php _e('Add Address Fields on the Vendor Registration form', 'vendorpro'); ?></p>
+                </td>
+            </tr>
+        </table>
+
+        <h3><?php _e('Product Page Settings', 'vendorpro'); ?></h3>
+        <table class="form-table">
+            <tr>
+                <th scope="row"><?php _e('Show Vendor Info', 'vendorpro'); ?></th>
+                <td>
+                    <label class="vendorpro-toggle">
+                        <input type="checkbox" name="vendorpro_show_vendor_info" value="yes" <?php checked(get_option('vendorpro_show_vendor_info', 'yes'), 'yes'); ?>>
+                        <span class="slider round"></span>
+                    </label>
+                    <p class="description"><?php _e('Show vendor information on single product page', 'vendorpro'); ?></p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php _e('Enable More Products Tab', 'vendorpro'); ?></th>
+                <td>
+                    <label class="vendorpro-toggle">
+                        <input type="checkbox" name="vendorpro_enable_more_products_tab" value="yes" <?php checked(get_option('vendorpro_enable_more_products_tab', 'yes'), 'yes'); ?>>
+                        <span class="slider round"></span>
+                    </label>
+                    <p class="description"><?php _e('Enable "More Products" tab on the single product page.', 'vendorpro'); ?>
+                    </p>
                 </td>
             </tr>
         </table>

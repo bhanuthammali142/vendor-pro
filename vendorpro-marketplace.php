@@ -125,6 +125,7 @@ final class VendorPro_Marketplace
         require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-frontend.php';
         require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-registration.php';
         require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-store.php';
+        require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-setup-wizard.php';
 
         // API includes
         require_once VENDORPRO_INCLUDES_DIR . 'api/class-ajax-handler.php';
@@ -150,6 +151,7 @@ final class VendorPro_Marketplace
 
         VendorPro_Vendor_Dashboard::instance();
         VendorPro_Frontend::instance();
+        VendorPro_Vendor_Setup_Wizard::instance();
         VendorPro_Ajax_Handler::instance();
         VendorPro_REST_API::instance();
     }

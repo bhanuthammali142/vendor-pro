@@ -34,6 +34,43 @@ class VendorPro_Admin
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
         add_filter('plugin_action_links_' . VENDORPRO_PLUGIN_BASENAME, array($this, 'plugin_action_links'));
+
+        // Block Admin Access
+        add_action('admin_init', array($this, 'restrict_admin_access'));
+    }
+
+    /**
+     * Restrict admin access for vendors
+     */
+    public function restrict_admin_access()
+    {
+        if (defined('DOING_AJAX') && DOING_AJAX) {
+            return;
+        }
+
+        // Check if restriction is enabled
+        // Default is 'yes' (Prevent access)
+        if (get_option('vendorpro_admin_access', 'yes') !== 'yes') {
+            return;
+        }
+
+        if (!is_user_logged_in()) {
+            return;
+        }
+
+        $user = wp_get_current_user();
+
+        // If user is a vendor AND NOT an admin
+        if (in_array('vendor', (array) $user->roles) && !in_array('administrator', (array) $user->roles) && !current_user_can('manage_options')) {
+            // Redirect to vendor dashboard
+            $dashboard_page_id = get_option('vendorpro_vendor_dashboard_page_id');
+            if ($dashboard_page_id) {
+                wp_redirect(get_permalink($dashboard_page_id));
+            } else {
+                wp_redirect(home_url());
+            }
+            exit;
+        }
     }
 
     /**
