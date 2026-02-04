@@ -120,13 +120,17 @@ function vendorpro_price($price)
 /**
  * Get vendor dashboard URL
  */
-function vendorpro_get_dashboard_url($page = '')
+function vendorpro_get_dashboard_url($page = '', $args = array())
 {
     $page_id = get_option('vendorpro_vendor_dashboard_page_id');
     $url = $page_id ? get_permalink($page_id) : home_url('/vendor-dashboard');
 
     if ($page) {
         $url = trailingslashit($url) . $page;
+    }
+
+    if (!empty($args) && is_array($args)) {
+        $url = add_query_arg($args, $url);
     }
 
     return $url;
@@ -311,4 +315,110 @@ function vendorpro_store_shortcode($atts)
     ob_start();
     vendorpro_get_template('frontend/vendor-store.php', $atts);
     return ob_get_clean();
+}
+
+/**
+ * Get vendor report stats
+ */
+function vendorpro_get_vendor_report_stats($vendor_id, $date_from, $date_to)
+{
+    return VendorPro_Vendor::instance()->get_vendor_report_stats($vendor_id, $date_from, $date_to);
+}
+
+/**
+ * Get vendor order status counts
+ */
+function vendorpro_get_vendor_order_status_counts($vendor_id)
+{
+    return VendorPro_Vendor::instance()->get_vendor_order_status_counts($vendor_id);
+}
+
+/**
+ * Get vendor customers
+ */
+function vendorpro_get_vendor_customers($vendor_id)
+{
+    return VendorPro_Vendor::instance()->get_vendor_customers($vendor_id);
+}
+
+/**
+ * Get vendor pending withdrawals
+ */
+function vendorpro_get_vendor_pending_withdrawals($vendor_id)
+{
+    return VendorPro_Database::instance()->get_vendor_withdrawals($vendor_id, array('status' => 'pending'));
+}
+
+/**
+ * Get vendor payment methods
+ */
+function vendorpro_get_vendor_payment_methods($vendor_id)
+{
+    $vendor = vendorpro_get_vendor($vendor_id);
+    if (!$vendor)
+        return array();
+
+    $methods = array();
+
+    // Check Bank
+    $bank = get_user_meta($vendor->user_id, 'vendorpro_payment_method_bank', true);
+    if (!empty($bank)) {
+        $methods['bank'] = array(
+            'account' => $bank['bank_name'] . ' - ' . substr($bank['account_number'], -4)
+        );
+    }
+
+    // Check PayPal
+    $paypal = get_user_meta($vendor->user_id, 'vendorpro_payment_method_paypal', true);
+    if (!empty($paypal)) {
+        $methods['paypal'] = array(
+            'account' => $paypal['email']
+        );
+    }
+
+    return $methods;
+}
+
+/**
+ * Get vendor last payment
+ */
+function vendorpro_get_vendor_last_payment($vendor_id)
+{
+    $withdrawals = VendorPro_Database::instance()->get_vendor_withdrawals($vendor_id, array(
+        'status' => 'approved',
+        'limit' => 1,
+        'orderby' => 'date_created',
+        'order' => 'DESC'
+    ));
+
+    return !empty($withdrawals) ? $withdrawals[0] : null;
+}
+
+/**
+ * Get order vendor commission
+ */
+function vendorpro_get_order_vendor_commission($order_id, $vendor_id)
+{
+    return VendorPro_Database::instance()->get_order_commission_amount($order_id, $vendor_id);
+}
+
+/**
+ * Handle file upload
+ */
+function vendorpro_handle_file_upload($file, $type = 'image')
+{
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
+    require_once(ABSPATH . 'wp-admin/includes/file.php');
+    require_once(ABSPATH . 'wp-admin/includes/media.php');
+
+    $attachment_id = media_handle_sideload($file, 0);
+
+    if (is_wp_error($attachment_id)) {
+        return $attachment_id;
+    }
+
+    return array(
+        'id' => $attachment_id,
+        'url' => wp_get_attachment_url($attachment_id)
+    );
 }

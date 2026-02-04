@@ -303,3 +303,180 @@
         transform: rotate(360deg);
     }
 }
+
+/* Page Headers */
+.vendorpro-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.vendorpro-page-header h1 {
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+}
+
+.vendorpro-btn-primary {
+    background: #0071DC;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.vendorpro-btn-primary:hover {
+    background: #005bb5;
+    transform: translateY(-2px);
+}
+
+/* Reports Page */
+.vendorpro-date-filter {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.vendorpro-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.vendorpro-metric-card {
+    background: white;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.metric-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.metric-change {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.metric-change.positive {
+    color: #28a745;
+}
+
+.metric-change.negative {
+    color: #dc3545;
+}
+
+/* Orders Page */
+.vendorpro-status-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.vendorpro-status-tabs a {
+    padding: 8px 16px;
+    color: #666;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.vendorpro-status-tabs a.active {
+    background: #0071DC;
+    color: white;
+}
+
+.vendorpro-orders-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.vendorpro-select,
+.vendorpro-form-input,
+.vendorpro-form-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    height: 42px;
+}
+
+/* Settings Form */
+.vendorpro-form-section {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.vendorpro-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.vendorpro-form-input,
+.vendorpro-form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.vendorpro-form-input:focus,
+.vendorpro-form-textarea:focus {
+    border-color: #0071DC;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 113, 220, 0.1);
+}
+
+.vendorpro-form-textarea {
+    resize: vertical;
+}
+
+/* Withdraw Page */
+.payment-methods-list {
+    margin-top: 20px;
+}
+
+.payment-method-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}

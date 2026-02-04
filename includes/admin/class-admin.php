@@ -76,6 +76,9 @@ class VendorPro_Admin
     /**
      * Add admin menu
      */
+    /**
+     * Add admin menu
+     */
     public function admin_menu()
     {
         add_menu_page(
@@ -99,6 +102,24 @@ class VendorPro_Admin
 
         add_submenu_page(
             'vendorpro',
+            __('Withdraw', 'vendorpro'),
+            __('Withdraw', 'vendorpro'),
+            'manage_options',
+            'vendorpro-withdrawals',
+            array('VendorPro_Admin_Withdrawals', 'render_page')
+        );
+
+        add_submenu_page(
+            'vendorpro',
+            __('Reverse Withdrawal', 'vendorpro'),
+            __('Reverse Withdrawal', 'vendorpro'),
+            'manage_options',
+            'vendorpro-reverse-withdrawal',
+            array('VendorPro_Admin_Reverse_Withdrawal', 'render_page')
+        );
+
+        add_submenu_page(
+            'vendorpro',
             __('Vendors', 'vendorpro'),
             __('Vendors', 'vendorpro'),
             'manage_options',
@@ -106,6 +127,7 @@ class VendorPro_Admin
             array('VendorPro_Admin_Vendors', 'render_page')
         );
 
+        // Keeping Commissions as it is essential, though not in the specific screenshot provided
         add_submenu_page(
             'vendorpro',
             __('Commissions', 'vendorpro'),
@@ -117,11 +139,29 @@ class VendorPro_Admin
 
         add_submenu_page(
             'vendorpro',
-            __('Withdrawals', 'vendorpro'),
-            __('Withdrawals', 'vendorpro'),
+            __('Modules', 'vendorpro'),
+            __('Modules', 'vendorpro'),
             'manage_options',
-            'vendorpro-withdrawals',
-            array('VendorPro_Admin_Withdrawals', 'render_page')
+            'vendorpro-modules',
+            array('VendorPro_Admin_Modules', 'render_page')
+        );
+
+        add_submenu_page(
+            'vendorpro',
+            __('Status', 'vendorpro'),
+            __('Status', 'vendorpro'),
+            'manage_options',
+            'vendorpro-status',
+            array('VendorPro_Admin_Status', 'render_page')
+        );
+
+        add_submenu_page(
+            'vendorpro',
+            __('Help', 'vendorpro'),
+            __('Help', 'vendorpro'),
+            'manage_options',
+            'vendorpro-help',
+            array('VendorPro_Admin_Help', 'render_page')
         );
 
         add_submenu_page(

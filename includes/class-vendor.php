@@ -274,33 +274,247 @@ class VendorPro_Vendor
 
         $defaults = array(
             'limit' => -1,
-            'return' => 'ids'
+            'return' => 'ids',
+            'status' => 'any',
+            'customer' => '',
+            'search' => '',
+            'date_from' => '',
+            'date_to' => ''
         );
 
         $args = wp_parse_args($args, $defaults);
 
+        // Map status 'any' to WooCommerce statuses
+        if ($args['status'] === 'any' || $args['status'] === 'all') {
+            $args['status'] = array_keys(wc_get_order_statuses());
+        }
+
+        // Basic query args
+        $query_args = array(
+            'limit' => $args['limit'],
+            'status' => $args['status'],
+            'return' => 'ids',
+        );
+
+        // Date filtering
+        if (!empty($args['date_from']) || !empty($args['date_to'])) {
+            $query_args['date_created'] = '';
+            if (!empty($args['date_from'])) {
+                $query_args['date_created'] .= '>=' . $args['date_from'];
+            }
+            if (!empty($args['date_to'])) {
+                $query_args['date_created'] .= (!empty($args['date_from']) ? '...' : '<=') . $args['date_to'];
+            }
+        }
+
+        // Customer filtering
+        if (!empty($args['customer'])) {
+            $query_args['customer_id'] = $args['customer'];
+        }
+
+        // Search
+        if (!empty($args['search'])) {
+            // WC doesn't support search in wc_get_orders well, needed custom query or post search
+            // For now, MVP: we will post-filter search
+        }
+
         // Get orders containing vendor products
-        $orders = wc_get_orders($args);
-        $vendor_orders = array();
+        // Note: wc_get_orders doesn't support 'product_id' filter directly easily without loops
+        // So we get ALL orders for now (optimization needed for scale)
+        // Better: Query line items directly 
+
+        global $wpdb;
+
+        // Custom query to find orders with vendor products
+        $product_ids_str = implode(',', array_map('absint', $product_ids));
+
+        $sql = "SELECT DISTINCT order_id FROM {$wpdb->prefix}woocommerce_order_items as items
+                JOIN {$wpdb->prefix}woocommerce_order_itemmeta as meta ON items.order_item_id = meta.order_item_id
+                WHERE meta.meta_key = '_product_id' 
+                AND meta.meta_value IN ($product_ids_str)
+                AND items.order_item_type = 'line_item'";
+
+        $order_ids_with_products = $wpdb->get_col($sql);
+
+        if (empty($order_ids_with_products)) {
+            return array();
+        }
+
+        $query_args['include'] = $order_ids_with_products;
+
+        $orders = wc_get_orders($query_args);
+
+        // Post-filtering for Search (if needed)
+
+        return $orders;
+    }
+
+    /**
+     * Get vendor order status counts
+     */
+    public function get_vendor_order_status_counts($vendor_id)
+    {
+        $counts = array(
+            'all' => 0,
+            'pending' => 0, // wc-pending
+            'processing' => 0, // wc-processing
+            'on-hold' => 0, // wc-on-hold
+            'completed' => 0, // wc-completed
+            'cancelled' => 0, // wc-cancelled
+            'refunded' => 0, // wc-refunded
+            'failed' => 0 // wc-failed
+        );
+
+        $orders = $this->get_vendor_orders($vendor_id, array('limit' => -1));
+
+        $counts['all'] = count($orders);
 
         foreach ($orders as $order_id) {
             $order = wc_get_order($order_id);
-
-            if (!$order) {
-                continue;
-            }
-
-            foreach ($order->get_items() as $item) {
-                $product_id = $item->get_product_id();
-
-                if (in_array($product_id, $product_ids)) {
-                    $vendor_orders[] = $order;
-                    break;
+            if ($order) {
+                $status = $order->get_status();
+                if (isset($counts[$status])) {
+                    $counts[$status]++;
                 }
             }
         }
 
-        return $vendor_orders;
+        return $counts;
+    }
+
+    /**
+     * Get vendor customers
+     */
+    public function get_vendor_customers($vendor_id)
+    {
+        global $wpdb;
+        $orders = $this->get_vendor_orders($vendor_id, array('limit' => -1));
+
+        if (empty($orders))
+            return array();
+
+        $customer_ids = array();
+        foreach ($orders as $order_id) {
+            $order = wc_get_order($order_id);
+            if ($order && $order->get_user_id()) {
+                $customer_ids[] = $order->get_user_id();
+            }
+        }
+
+        if (empty($customer_ids))
+            return array();
+
+        $customer_ids = array_unique($customer_ids);
+
+        $args = array(
+            'include' => $customer_ids,
+            'fields' => array('ID', 'display_name', 'user_email')
+        );
+
+        return get_users($args);
+    }
+
+    /**
+     * Get vendor report stats
+     */
+    public function get_vendor_report_stats($vendor_id, $date_from, $date_to)
+    {
+        // Default structure
+        $stats = array(
+            'total_sales' => 0,
+            'sales_change' => 0,
+            'commission' => 0,
+            'commission_change' => 0,
+            'net_sales' => 0,
+            'net_change' => 0,
+            'orders' => 0,
+            'orders_change' => 0,
+            'products_sold' => 0,
+            'products_change' => 0,
+            'total_earning' => 0,
+            'earning_change' => 0,
+            'marketplace_discount' => 0,
+            'discount_change' => 0,
+            'store_discount' => 0,
+            'store_discount_change' => 0,
+            'variations_sold' => 0,
+            'variations_change' => 0,
+            'chart_data' => array('labels' => array(), 'net_sales' => array(), 'orders' => array())
+        );
+
+        $orders = $this->get_vendor_orders($vendor_id, array(
+            'date_from' => $date_from,
+            'date_to' => $date_to,
+            'status' => array('completed', 'processing', 'on-hold')
+        ));
+
+        // Calculate current period stats
+        foreach ($orders as $order_id) {
+            $order = wc_get_order($order_id);
+            if (!$order)
+                continue;
+
+            $commission = VendorPro_Database::instance()->get_order_commission_amount($order_id, $vendor_id);
+            $order_total = $this->get_vendor_order_total($order, $vendor_id);
+
+            $stats['total_sales'] += $order_total;
+            $stats['commission'] += $commission;
+            // Net sales = Total Sales - Commission (Simplified)
+            $stats['net_sales'] += ($order_total - $commission);
+            $stats['total_earning'] += ($order_total - $commission); // Same as net sales for now
+            $stats['orders']++;
+
+            foreach ($order->get_items() as $item) {
+                // Check if product belongs to vendor
+                $product = $item->get_product();
+                if ($product) {
+                    // Ensure product belongs to vendor. 
+                    // (get_vendor_orders already filtered orders, but orders might contain mixed products)
+                    $vendor_user_id = VendorPro_Database::instance()->get_vendor($vendor_id)->user_id;
+                    if (get_post_field('post_author', $product->get_id()) == $vendor_user_id) {
+                        $stats['products_sold'] += $item->get_quantity();
+                    }
+                }
+            }
+
+            // Chart Data Prep (Day by Day)
+            $date_label = $order->get_date_created()->date('Y-m-d');
+            if (!isset($label_data[$date_label])) {
+                $label_data[$date_label] = array('sales' => 0, 'orders' => 0);
+            }
+            $label_data[$date_label]['sales'] += ($order_total - $commission);
+            $label_data[$date_label]['orders']++;
+        }
+
+        // Fill chart data
+        if (!empty($label_data)) {
+            ksort($label_data);
+            foreach ($label_data as $date => $data) {
+                $stats['chart_data']['labels'][] = $date;
+                $stats['chart_data']['net_sales'][] = $data['sales'];
+                $stats['chart_data']['orders'][] = $data['orders'];
+            }
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Get vendor order total (only items belonging to vendor)
+     */
+    private function get_vendor_order_total($order, $vendor_id)
+    {
+        $total = 0;
+        $vendor_user_id = VendorPro_Database::instance()->get_vendor($vendor_id)->user_id;
+
+        foreach ($order->get_items() as $item) {
+            $product = $item->get_product();
+            if ($product && get_post_field('post_author', $product->get_id()) == $vendor_user_id) {
+                $total += $item->get_total();
+            }
+        }
+
+        return $total;
     }
 
     /**

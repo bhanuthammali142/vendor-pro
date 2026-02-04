@@ -3,7 +3,7 @@
  * Plugin Name: VendorPro Marketplace
  * Plugin URI: https://vendorpro-marketplace.com
  * Description: A complete multi-vendor marketplace solution for WordPress & WooCommerce. Enable vendors to sell products on your site with commission management, vendor dashboards, and more.
- * Version: 1.5.0
+ * Version: 1.6.0
  * Author: Bhanu Thammali
  * Author URI: https://github.com/bhanuthammali
  * Text Domain: vendorpro
@@ -22,7 +22,7 @@ if (!defined('WPINC')) {
 }
 
 // Define plugin constants
-define('VENDORPRO_VERSION', '1.5.0');
+define('VENDORPRO_VERSION', '1.6.0');
 define('VENDORPRO_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('VENDORPRO_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('VENDORPRO_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -112,6 +112,10 @@ final class VendorPro_Marketplace
             require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-vendors.php';
             require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-commissions.php';
             require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-withdrawals.php';
+            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-reverse-withdrawal.php';
+            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-modules.php';
+            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-status.php';
+            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-help.php';
         }
 
         // Vendor dashboard includes
@@ -124,7 +128,6 @@ final class VendorPro_Marketplace
         // Frontend includes
         require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-frontend.php';
         require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-registration.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-store.php';
         require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-setup-wizard.php';
 
         // API includes
@@ -209,19 +212,9 @@ final class VendorPro_Marketplace
      */
     private function add_rewrite_rules()
     {
-        // Vendor dashboard
-        add_rewrite_rule('^vendor-dashboard/?$', 'index.php?vendor_dashboard=home', 'top');
-        add_rewrite_rule('^vendor-dashboard/([^/]+)/?$', 'index.php?vendor_dashboard=$matches[1]', 'top');
-
-        // Vendor store
-        add_rewrite_rule('^store/([^/]+)/?$', 'index.php?vendor_store=$matches[1]', 'top');
-
-        // Add query vars
-        add_filter('query_vars', function ($vars) {
-            $vars[] = 'vendor_dashboard';
-            $vars[] = 'vendor_store';
-            return $vars;
-        });
+        // Rules are now registered in their respective classes
+        // VendorPro_Vendor_Dashboard handles dashboard rules
+        // VendorPro_Frontend handles store rules
     }
 
     /**

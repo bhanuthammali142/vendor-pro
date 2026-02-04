@@ -11,11 +11,16 @@ A complete, production-ready multi-vendor marketplace solution for WordPress & W
 ## ✨ Key Features
 
 ### 🎯 **Core Marketplace Features**
+
 - ✅ Multi-vendor product management
 - ✅ Automated commission system (Percentage, Fixed, Combined)
 - ✅ Vendor registration & approval workflow
 - ✅ Individual vendor storefronts with custom URLs
-- ✅ Comprehensive vendor dashboard
+- ✅ **Enhanced Vendor Dashboard:**
+  - **Reports:** Detailed sales stats, charts, and date filtering
+  - **Orders:** Manage orders, view details, and update status
+  - **Products:** List, edit, and manage products
+  - **Settings:** Customize store profile, banner, and payment methods
 - ✅ Withdrawal management system with charges
 - ✅ Order management & tracking
 

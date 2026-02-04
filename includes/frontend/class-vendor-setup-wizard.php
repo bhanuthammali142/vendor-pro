@@ -97,11 +97,11 @@ class VendorPro_Vendor_Setup_Wizard
             $step = sanitize_text_field($_POST['vendorpro_setup_step']);
             $user_id = get_current_user_id();
             $vendor = VendorPro_Vendor::instance()->get_vendor_by_user($user_id);
-            
+
             if (!$vendor) {
                 return;
             }
-            
+
             $vendor_id = $vendor->id;
 
             if ($step === 'store') {
@@ -129,14 +129,16 @@ class VendorPro_Vendor_Setup_Wizard
      */
     private function load_template()
     {
-        // Simple inline template for now, or include a file
-        // Ideally we keep logic here and HTML in templates/frontend/setup-wizard.php
-
         $logo = get_option('vendorpro_setup_wizard_logo');
-        $message = get_option('vendorpro_setup_wizard_message', 'Welcome to the Marketplace!');
         $step = isset($_GET['step']) ? sanitize_text_field($_GET['step']) : 'store';
 
-        // Simple HTML Output
+        // Progress Bar Calculation
+        $steps = array(
+            'store' => __('Store', 'vendorpro'),
+            'payment' => __('Payment', 'vendorpro'),
+            'finish' => __('Ready!', 'vendorpro')
+        );
+        $current_step_index = array_search($step, array_keys($steps));
         ?>
         <!DOCTYPE html>
         <html <?php language_attributes(); ?>>
@@ -144,49 +146,69 @@ class VendorPro_Vendor_Setup_Wizard
         <head>
             <meta charset="<?php bloginfo('charset'); ?>">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>
-                <?php _e('Vendor Setup', 'vendorpro'); ?>
-            </title>
+            <title><?php _e('Vendor Setup', 'vendorpro'); ?></title>
             <?php wp_head(); ?>
             <style>
                 body {
-                    background: #f0f2f5;
-                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+                    background: #f6f6f6;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+                    color: #444;
                 }
 
                 .vendorpro-setup-wrap {
-                    max-width: 600px;
-                    margin: 50px auto;
+                    max-width: 700px;
+                    margin: 60px auto;
                     background: #fff;
-                    padding: 40px;
-                    border-radius: 8px;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+                    border-radius: 4px;
+                    overflow: hidden;
                 }
 
-                .vendorpro-setup-logo {
+                .vendorpro-setup-header {
                     text-align: center;
-                    margin-bottom: 30px;
+                    padding: 30px;
+                    border-bottom: 1px solid #eee;
                 }
 
-                .vendorpro-setup-logo img {
-                    max-height: 80px;
-                }
-
-                .vendorpro-setup-steps {
+                .vendorpro-progress-bar {
                     display: flex;
                     justify-content: space-between;
-                    margin-bottom: 30px;
+                    padding: 20px 40px;
+                    background: #fcfcfc;
                     border-bottom: 1px solid #eee;
-                    padding-bottom: 20px;
                 }
 
-                .step {
-                    font-weight: bold;
+                .vendorpro-progress-bar li {
+                    list-style: none;
+                    text-transform: uppercase;
+                    font-size: 12px;
+                    font-weight: 600;
                     color: #ccc;
+                    position: relative;
+                    flex: 1;
+                    text-align: center;
                 }
 
-                .step.active {
-                    color: #0071DC;
+                .vendorpro-progress-bar li.active {
+                    color: #007cba;
+                }
+
+                .vendorpro-progress-bar li:before {
+                    content: '';
+                    width: 10px;
+                    height: 10px;
+                    background: #ccc;
+                    display: block;
+                    margin: 0 auto 10px;
+                    border-radius: 50%;
+                }
+
+                .vendorpro-progress-bar li.active:before {
+                    background: #007cba;
+                }
+
+                .vendorpro-setup-content {
+                    padding: 40px;
                 }
 
                 .form-row {
@@ -195,100 +217,140 @@ class VendorPro_Vendor_Setup_Wizard
 
                 .form-row label {
                     display: block;
-                    margin-bottom: 8px;
                     font-weight: 600;
+                    margin-bottom: 8px;
                 }
 
-                .form-row input,
+                .form-row input[type="text"],
+                .form-row input[type="email"],
                 .form-row textarea {
                     width: 100%;
-                    padding: 10px;
+                    padding: 10px 12px;
                     border: 1px solid #ddd;
                     border-radius: 4px;
+                    font-size: 14px;
+                }
+
+                .form-actions {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 30px;
                 }
 
                 .btn {
-                    background: #0071DC;
+                    background: #007cba;
                     color: #fff;
                     border: none;
-                    padding: 12px 24px;
+                    padding: 12px 30px;
                     border-radius: 4px;
+                    font-size: 14px;
                     cursor: pointer;
-                    font-size: 16px;
-                    width: 100%;
+                    text-decoration: none;
+                    font-weight: 500;
+                    transition: background 0.2s;
                 }
 
-                .skip-link {
-                    display: block;
-                    text-align: center;
-                    margin-top: 15px;
-                    color: #666;
-                    text-decoration: none;
+                .btn:hover {
+                    background: #006ba1;
+                }
+
+                .btn-secondary {
+                    background: #f6f7f7;
+                    color: #555;
+                    border: 1px solid #ddd;
+                }
+
+                .btn-secondary:hover {
+                    background: #f0f0f1;
                 }
             </style>
         </head>
 
         <body>
             <div class="vendorpro-setup-wrap">
-                <div class="vendorpro-setup-logo">
+                <div class="vendorpro-setup-header">
                     <?php if ($logo): ?>
-                        <img src="<?php echo esc_url($logo); ?>" alt="Logo">
+                        <img src="<?php echo esc_url($logo); ?>" alt="Logo" style="max-height: 50px;">
                     <?php else: ?>
-                        <h1>
-                            <?php echo get_bloginfo('name'); ?>
-                        </h1>
+                        <h1 style="margin:0; font-size: 24px;"><?php bloginfo('name'); ?></h1>
                     <?php endif; ?>
                 </div>
 
-                <?php if ($step === 'store'): ?>
-                    <p style="text-align: center; color: #666; margin-bottom: 30px;">
-                        <?php echo esc_html($message); ?>
-                    </p>
+                <ul class="vendorpro-progress-bar">
+                    <?php
+                    $i = 0;
+                    foreach ($steps as $key => $label) {
+                        $active_class = ($key === $step || $i <= $current_step_index) ? 'active' : '';
+                        echo '<li class="' . $active_class . '">' . esc_html($label) . '</li>';
+                        $i++;
+                    }
+                    ?>
+                </ul>
 
-                    <form method="post">
-                        <?php wp_nonce_field('vendorpro_setup_action'); ?>
-                        <input type="hidden" name="vendorpro_setup_step" value="store">
+                <div class="vendorpro-setup-content">
+                    <?php if ($step === 'store'): ?>
+                        <form method="post">
+                            <?php wp_nonce_field('vendorpro_setup_action'); ?>
+                            <input type="hidden" name="vendorpro_setup_step" value="store">
 
-                        <div class="form-row">
-                            <label>
-                                <?php _e('Store Address', 'vendorpro'); ?>
-                            </label>
-                            <textarea name="address" required></textarea>
+                            <h2 style="margin-top:0;"><?php _e('Store Setup', 'vendorpro'); ?></h2>
+                            <p><?php _e('Details about your store address and contact info.', 'vendorpro'); ?></p>
+                            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+                            <div class="form-row">
+                                <label><?php _e('Store Address', 'vendorpro'); ?></label>
+                                <textarea name="address" rows="3" required></textarea>
+                            </div>
+                            <div class="form-row">
+                                <label><?php _e('Phone Number', 'vendorpro'); ?></label>
+                                <input type="text" name="phone" required>
+                            </div>
+
+                            <div class="form-actions">
+                                <a href="<?php echo esc_url(add_query_arg('step', 'payment')); ?>"
+                                    class="btn btn-secondary"><?php _e('Skip this step', 'vendorpro'); ?></a>
+                                <button type="submit" class="btn"><?php _e('Continue', 'vendorpro'); ?></button>
+                            </div>
+                        </form>
+
+                    <?php elseif ($step === 'payment'): ?>
+                        <form method="post">
+                            <?php wp_nonce_field('vendorpro_setup_action'); ?>
+                            <input type="hidden" name="vendorpro_setup_step" value="payment">
+
+                            <h2 style="margin-top:0;"><?php _e('Payment Setup', 'vendorpro'); ?></h2>
+                            <p><?php _e('How do you want to receive your payments?', 'vendorpro'); ?></p>
+                            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+                            <div class="form-row">
+                                <label><?php _e('PayPal Email', 'vendorpro'); ?></label>
+                                <input type="email" name="paypal" required placeholder="you@example.com">
+                                <p style="font-size: 12px; color: #888; margin-top: 5px;">
+                                    <?php _e('Your commissions will be sent to this PayPal account.', 'vendorpro'); ?></p>
+                            </div>
+
+                            <div class="form-actions">
+                                <a href="<?php echo esc_url(add_query_arg('step', 'finish')); ?>"
+                                    class="btn btn-secondary"><?php _e('Skip this step', 'vendorpro'); ?></a>
+                                <button type="submit" class="btn"><?php _e('Continue', 'vendorpro'); ?></button>
+                            </div>
+                        </form>
+
+                    <?php elseif ($step === 'finish'): ?>
+                        <div style="text-align: center; padding: 20px;">
+                            <span class="dashicons dashicons-yes-alt"
+                                style="font-size: 64px; width: 64px; height: 64px; color: #46b450; margin-bottom: 20px;"></span>
+                            <h2><?php _e('You are ready!', 'vendorpro'); ?></h2>
+                            <p><?php _e('Your store is set up. You can now start adding products.', 'vendorpro'); ?></p>
+
+                            <div style="margin-top: 40px;">
+                                <a href="<?php echo esc_url(get_permalink(get_option('vendorpro_vendor_dashboard_page_id'))); ?>"
+                                    class="btn"><?php _e('Go to your Dashboard', 'vendorpro'); ?></a>
+                            </div>
                         </div>
-
-                        <div class="form-row">
-                            <label>
-                                <?php _e('Phone Number', 'vendorpro'); ?>
-                            </label>
-                            <input type="text" name="phone" required>
-                        </div>
-
-                        <div class="form-row">
-                            <label>
-                                <?php _e('PayPal Email', 'vendorpro'); ?>
-                            </label>
-                            <input type="email" name="paypal" required>
-                        </div>
-
-                        <button type="submit" class="btn">
-                            <?php _e('Continue', 'vendorpro'); ?>
-                        </button>
-                    </form>
-
-                <?php elseif ($step === 'finish'): ?>
-                    <div style="text-align: center;">
-                        <h2>
-                            <?php _e('You\'re All Set!', 'vendorpro'); ?>
-                        </h2>
-                        <p>
-                            <?php _e('Your store is set up and ready to go.', 'vendorpro'); ?>
-                        </p>
-                        <a href="<?php echo esc_url(get_permalink(get_option('vendorpro_vendor_dashboard_page_id'))); ?>"
-                            class="btn" style="display: inline-block; text-decoration: none; margin-top: 20px;">
-                            <?php _e('Go to Dashboard', 'vendorpro'); ?>
-                        </a>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
             </div>
         </body>
 

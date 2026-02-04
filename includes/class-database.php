@@ -410,4 +410,20 @@ class VendorPro_Database
 
         return $balance ? floatval($balance) : 0;
     }
+    /**
+     * Get order commission amount
+     */
+    public function get_order_commission_amount($order_id, $vendor_id)
+    {
+        global $wpdb;
+
+        $commission = $wpdb->get_var($wpdb->prepare(
+            "SELECT vendor_earning FROM {$wpdb->prefix}vendorpro_commissions 
+             WHERE order_id = %d AND vendor_id = %d",
+            $order_id,
+            $vendor_id
+        ));
+
+        return $commission ? floatval($commission) : 0;
+    }
 }
