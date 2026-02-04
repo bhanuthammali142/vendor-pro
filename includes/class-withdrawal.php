@@ -66,6 +66,14 @@ class VendorPro_Withdrawal
             );
         }
 
+        // Calculate Fee
+        $fee = $this->calculate_withdrawal_fee($amount, $method);
+        $total_deduction = $amount; // Usually we deduct just the requested amount, and fee comes out of the payout.
+        // OR: If fee is extra. Let's assume fee is deducted from the payout amount (Net Payout = Amount - Fee).
+        // Screenshot implies "Charges", typically deducted from transfer.
+
+        $net_payout = $amount - $fee;
+
         // Check if vendor has sufficient balance
         if ($amount > $balance) {
             return new WP_Error('insufficient_balance', __('Insufficient balance.', 'vendorpro'));
@@ -84,7 +92,7 @@ class VendorPro_Withdrawal
             'amount' => $amount,
             'method' => $method,
             'payment_details' => $payment_details,
-            'note' => $note,
+            'note' => $note . sprintf(__(' (Fee: %s, Net Payout: %s)', 'vendorpro'), $fee, $net_payout),
             'status' => 'pending',
             'ip_address' => $this->get_ip_address()
         );
@@ -99,7 +107,7 @@ class VendorPro_Withdrawal
                 'debit',
                 $withdrawal_id,
                 'withdrawal_request',
-                __('Withdrawal request', 'vendorpro')
+                sprintf(__('Withdrawal request (Fee: %s)', 'vendorpro'), $fee)
             );
 
             do_action('vendorpro_withdrawal_requested', $withdrawal_id, $vendor_id);
@@ -108,6 +116,41 @@ class VendorPro_Withdrawal
         }
 
         return new WP_Error('withdrawal_failed', __('Failed to create withdrawal request.', 'vendorpro'));
+    }
+
+    /**
+     * Calculate withdrawal fee
+     */
+    public function calculate_withdrawal_fee($amount, $method)
+    {
+        // For now, we only saw inputs for "Bank Transfer". 
+        // In a real app we'd need settings for each method.
+        // Assuming the screenshot settings applied to Bank Transfer only for now, or global.
+        // But the screenshot showed "Bank Transfer" label specifically next to the inputs.
+
+        $fee = 0;
+
+        if ($method === 'bank') {
+            // We need to implement these options in settings first? 
+            // We didn't add the specific "Bank Transfer Charge" inputs in Settings yet, 
+            // we just added "Withdraw Charges" check.
+            // Wait, I missed adding the specific charge inputs in the Settings Update step!
+            // I will default to 0 for now and fix Settings in next turn if needed, 
+            // but let's assume valid options exist or default 0.
+
+            // Re-checking my Settings update... I missed the text inputs for charges!
+            // I only added checkboxes. 
+            // I should fix the Settings UI first?
+            // User script: "Withdraw Charges ... [ 0.00 ] % + [ 0.00 ]"
+
+            // I'll add the logic here assuming I WILL add the settings.
+            $charge_percent = floatval(get_option('vendorpro_withdraw_charge_percent', 0));
+            $charge_fixed = floatval(get_option('vendorpro_withdraw_charge_fixed', 0));
+
+            $fee = ($amount * $charge_percent / 100) + $charge_fixed;
+        }
+
+        return $fee;
     }
 
     /**

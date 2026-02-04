@@ -155,24 +155,43 @@ class VendorPro_Commission
     /**
      * Calculate commission
      */
-    public function calculate_commission($amount, $vendor)
+    public function calculate_commission($amount, $vendor, $order_item = null)
     {
-        $commission_rate = $vendor->commission_rate;
-        $commission_type = $vendor->commission_type;
+        // Get global settings (vendor settings would override these in a real scenario, but starting with global)
+        $commission_type = get_option('vendorpro_commission_type', 'percentage');
+        $rate = floatval(get_option('vendorpro_commission_rate', 10));
+        $fixed_amt = floatval(get_option('vendorpro_commission_fixed_amt', 0));
+
+        // Allow vendor-specific overrides if set
+        if (!empty($vendor->commission_type)) {
+            $commission_type = $vendor->commission_type;
+            $rate = floatval($vendor->commission_rate);
+            // Assuming we'd add fixed_amt to vendor table if we wanted vendor-specific combined rates
+        }
+
+        $admin_commission = 0;
 
         if ($commission_type === 'percentage') {
-            $admin_commission = ($amount * $commission_rate) / 100;
-            $vendor_earning = $amount - $admin_commission;
-        } else {
-            // Fixed commission
-            $admin_commission = $commission_rate;
-            $vendor_earning = $amount - $admin_commission;
+            $admin_commission = ($amount * $rate) / 100;
+        } elseif ($commission_type === 'fixed') {
+            $admin_commission = $rate; // In legacy, 'rate' held the fixed amount
+        } elseif ($commission_type === 'combined') {
+            $percentage_fee = ($amount * $rate) / 100;
+            $admin_commission = $percentage_fee + $fixed_amt;
         }
+
+        // Shipping & Tax Logic
+        // By default, vendor gets everything minus commission. 
+        // If Admin is recipient, we essentially "commission" 100% of that cost.
+        // NOTE: $amount usually includes tax/shipping in simple calls, but ideally we process line items separate from shipping items.
+        // For simplicity in this function, we assume $amount is product line total.
+
+        $vendor_earning = $amount - $admin_commission;
 
         return array(
             'vendor_earning' => max(0, $vendor_earning),
             'admin_commission' => $admin_commission,
-            'rate' => $commission_rate,
+            'rate' => $rate,
             'type' => $commission_type
         );
     }
