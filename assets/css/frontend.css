@@ -1,0 +1,274 @@
+/**
+ * VendorPro Frontend Styles
+ */
+
+/* Frontend General */
+.vendorpro-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Vendor Registration Form */
+.vendorpro-registration-form {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+.vendorpro-registration-form h2 {
+    margin: 0 0 30px;
+    font-size: 28px;
+    color: #333;
+    text-align: center;
+}
+
+.vendorpro-form-row {
+    margin-bottom: 25px;
+}
+
+.vendorpro-form-row label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.vendorpro-form-row input[type="text"],
+.vendorpro-form-row input[type="email"],
+.vendorpro-form-row input[type="tel"],
+.vendorpro-form-row textarea,
+.vendorpro-form-row select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.vendorpro-form-row input:focus,
+.vendorpro-form-row textarea:focus,
+.vendorpro-form-row select:focus {
+    outline: none;
+    border-color: #0071DC;
+    box-shadow: 0 0 0 3px rgba(0, 113, 220, 0.1);
+}
+
+.vendorpro-form-row textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.vendorpro-submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #0071DC 0%, #005bb5 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.vendorpro-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 113, 220, 0.3);
+}
+
+/* Vendors List */
+.vendorpro-vendors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.vendorpro-vendor-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.vendorpro-vendor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.vendorpro-vendor-banner {
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+}
+
+.vendorpro-vendor-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    position: absolute;
+    bottom: -40px;
+    left: 20px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #0071DC;
+}
+
+.vendorpro-vendor-info {
+    padding: 50px 20px 20px;
+}
+
+.vendorpro-vendor-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 10px;
+}
+
+.vendorpro-vendor-description {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 15px;
+}
+
+.vendorpro-vendor-meta {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+    font-size: 13px;
+    color: #666;
+}
+
+.vendorpro-vendor-rating {
+    color: #f39c12;
+}
+
+/* Vendor Store */
+.vendorpro-store-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 60px 20px;
+    color: #fff;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+
+.vendorpro-store-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    margin: 0 auto 20px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.vendorpro-store-name {
+    font-size: 36px;
+    margin: 0 0 10px;
+}
+
+.vendorpro-store-description {
+    font-size: 16px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.vendorpro-store-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.vendorpro-store-stat {
+    text-align: center;
+}
+
+.vendorpro-store-stat .value {
+    font-size: 28px;
+    font-weight: 700;
+    display: block;
+}
+
+.vendorpro-store-stat .label {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* Product Grid */
+.vendorpro-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+/* Messages */
+.vendorpro-message {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.vendorpro-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.vendorpro-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.vendorpro-message.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .vendorpro-vendors-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .vendorpro-products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .vendorpro-store-stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .vendorpro-registration-form {
+        padding: 30px 20px;
+    }
+}

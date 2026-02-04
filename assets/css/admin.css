@@ -1,0 +1,319 @@
+/**
+ * VendorPro Admin Styles
+ */
+
+/* Admin Dashboard */
+.vendorpro-admin-wrap {
+    margin: 20px 20px 0 0;
+}
+
+.vendorpro-admin-header {
+    background: #fff;
+    padding: 20px 30px;
+    margin: 0 0 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.vendorpro-admin-header h1 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.4;
+}
+
+/* Stats Cards */
+.vendorpro-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.vendorpro-stat-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid #0071DC;
+}
+
+.vendorpro-stat-card.warning {
+    border-left-color: #f39c12;
+}
+
+.vendorpro-stat-card.success {
+    border-left-color: #27ae60;
+}
+
+.vendorpro-stat-card.danger {
+    border-left-color: #e74c3c;
+}
+
+.vendorpro-stat-card h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.vendorpro-stat-card .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+/* Tables */
+.vendorpro-table {
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.vendorpro-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.vendorpro-table th {
+    background: #f8f9fa;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.vendorpro-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.vendorpro-table tr:last-child td {
+    border-bottom: none;
+}
+
+.vendorpro-table tr:hover {
+    background: #f8f9fa;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-completed {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-paid {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-unpaid {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-cancelled {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+.status-refunded {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Action Buttons */
+.vendorpro-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.vendorpro-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.vendorpro-btn-primary {
+    background: #0071DC;
+    color: #fff;
+}
+
+.vendorpro-btn-primary:hover {
+    background: #005bb5;
+    color: #fff;
+}
+
+.vendorpro-btn-success {
+    background: #27ae60;
+    color: #fff;
+}
+
+.vendorpro-btn-success:hover {
+    background: #229954;
+    color: #fff;
+}
+
+.vendorpro-btn-danger {
+    background: #e74c3c;
+    color: #fff;
+}
+
+.vendorpro-btn-danger:hover {
+    background: #c0392b;
+    color: #fff;
+}
+
+.vendorpro-btn-secondary {
+    background: #6c757d;
+    color: #fff;
+}
+
+.vendorpro-btn-secondary:hover {
+    background: #5a6268;
+    color: #fff;
+}
+
+/* Settings Page */
+.vendorpro-settings-wrap {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.vendorpro-settings-tabs {
+    display: flex;
+    border-bottom: 2px solid #e9ecef;
+    padding: 0;
+    margin: 0;
+}
+
+.vendorpro-settings-tabs a {
+    padding: 15px 25px;
+    text-decoration: none;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.3s ease;
+}
+
+.vendorpro-settings-tabs a:hover {
+    color: #0071DC;
+}
+
+.vendorpro-settings-tabs a.active {
+    color: #0071DC;
+    border-bottom-color: #0071DC;
+    font-weight: 600;
+}
+
+.vendorpro-settings-content {
+    padding: 30px;
+}
+
+.vendorpro-form-group {
+    margin-bottom: 25px;
+}
+
+.vendorpro-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.vendorpro-form-group input[type="text"],
+.vendorpro-form-group input[type="number"],
+.vendorpro-form-group select,
+.vendorpro-form-group textarea {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.vendorpro-form-group .description {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Pagination */
+.vendorpro-pagination {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.vendorpro-pagination a,
+.vendorpro-pagination span {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+}
+
+.vendorpro-pagination a:hover {
+    background: #0071DC;
+    color: #fff;
+    border-color: #0071DC;
+}
+
+.vendorpro-pagination .current {
+    background: #0071DC;
+    color: #fff;
+    border-color: #0071DC;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .vendorpro-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .vendorpro-table {
+        overflow-x: auto;
+    }
+    
+    .vendorpro-settings-tabs {
+        flex-direction: column;
+    }
+}
