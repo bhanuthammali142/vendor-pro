@@ -97,6 +97,11 @@ class VendorPro_Vendor_Setup_Wizard
             $step = sanitize_text_field($_POST['vendorpro_setup_step']);
             $user_id = get_current_user_id();
             $vendor = VendorPro_Vendor::instance()->get_vendor_by_user($user_id);
+            
+            if (!$vendor) {
+                return;
+            }
+            
             $vendor_id = $vendor->id;
 
             if ($step === 'store') {
@@ -273,7 +278,7 @@ class VendorPro_Vendor_Setup_Wizard
                 <?php elseif ($step === 'finish'): ?>
                     <div style="text-align: center;">
                         <h2>
-                            <?php _e('You represent ready!', 'vendorpro'); ?>
+                            <?php _e('You\'re All Set!', 'vendorpro'); ?>
                         </h2>
                         <p>
                             <?php _e('Your store is set up and ready to go.', 'vendorpro'); ?>

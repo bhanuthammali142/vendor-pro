@@ -1,499 +1,318 @@
-# 🎉 VendorPro Marketplace - Complete Multi-Vendor WordPress Plugin
+# 🏪 VendorPro Marketplace - Production Ready
 
-![WordPress](https://img.shields.io/badge/WordPress-5.8+-blue)
-![WooCommerce](https://img.shields.io/badge/WooCommerce-5.0+-purple)
-![PHP](https://img.shields.io/badge/PHP-7.4+-777BB4)
-![License](https://img.shields.io/badge/License-GPL--2.0-green)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
+**Version:** 1.5 (Final)  
+**Author:** Bhanu Thammali  
+**License:** GPL-2.0+
 
-## 🌟 What is VendorPro Marketplace?
-
-**VendorPro Marketplace** is a **complete, production-ready, multi-vendor marketplace plugin** for WordPress & WooCommerce. Built from scratch, it's similar to popular solutions like Dokan, WC Vendors, and WCFM, enabling you to transform your WooCommerce store into a full-featured marketplace where multiple vendors can sell their products.
-
-### ✨ Why VendorPro?
-
-- ✅ **100% Free & Open Source** - No premium features locked behind paywalls
-- ✅ **Production Ready** - Built with WordPress & WooCommerce best practices
-- ✅ **Modern UI/UX** - Beautiful, responsive design with smooth animations
-- ✅ **Fully Featured** - Everything you need for a marketplace out of the box
-- ✅ **Developer Friendly** - Clean code, hooks, filters, and template overrides
-- ✅ **Well Documented** - Comprehensive documentation and guides
-- ✅ **Secure** - Built with security best practices
-- ✅ **Extensible** - Easy to customize and extend
+A complete, production-ready multi-vendor marketplace solution for WordPress & WooCommerce. Transform your WooCommerce store into a thriving marketplace where multiple vendors can sell their products.
 
 ---
 
-## 🚀 Quick Start
+## ✨ Key Features
 
-```bash
-# 1. Upload to WordPress plugins directory
-/wp-content/plugins/vendorpro-marketplace/
+### 🎯 **Core Marketplace Features**
+- ✅ Multi-vendor product management
+- ✅ Automated commission system (Percentage, Fixed, Combined)
+- ✅ Vendor registration & approval workflow
+- ✅ Individual vendor storefronts with custom URLs
+- ✅ Comprehensive vendor dashboard
+- ✅ Withdrawal management system with charges
+- ✅ Order management & tracking
 
-# 2. Activate from WordPress admin
-WordPress Admin → Plugins → Activate "VendorPro Marketplace"
+### 💰 **Advanced Commission System**
+- **Commission Types:** Percentage, Fixed, or Combined (% + Fixed)
+- **Fee Recipients:** Configure who receives shipping & tax fees
+- **Per-Vendor Rates:** Set custom commission rates for individual vendors
+- **Real-time Calculations:** Automatic commission splitting on every order
 
-# 3. Configure settings
-VendorPro → Settings → Configure commission & withdrawal settings
+### 🏦 **Withdrawal System**
+- **Multiple Methods:** PayPal, Bank Transfer (extensible)
+- **Withdrawal Charges:** Set percentage + fixed fees per method
+- **Minimum Thresholds:** Configure minimum withdrawal amounts
+- **Order Status Control:** Define which order statuses count toward balance
+- **COD Exclusion:** Option to exclude Cash on Delivery from withdrawals
 
-# 4. Start accepting vendors!
-```
+### 🔄 **Reverse Withdrawal (COD Management)**
+- **Automatic Debiting:** Vendors owe commission on COD orders
+- **Balance Thresholds:** Set debt limits before enforcement
+- **Grace Periods:** Give vendors time to pay before penalties
+- **Automated Actions:**
+  - Disable Add to Cart on vendor products
+  - Hide withdrawal menu
+  - Mark vendor as inactive
 
-**See [QUICKSTART.md](QUICKSTART.md) for 5-minute setup guide**
+### 🧙‍♂️ **Vendor Onboarding**
+- **Setup Wizard:** Guided onboarding for new vendors
+- **Customizable:** Set custom logo and welcome message
+- **Quick Configuration:** Address, phone, payment details in one flow
 
----
+### 🎨 **Frontend Features**
+- **Custom Store Pages:** `yoursite.com/store/vendor-name`
+- **Product Page Enhancements:**
+  - Vendor Info Tab (logo, location, rating, description)
+  - More Products Tab (cross-sell vendor products)
+- **Responsive Design:** Mobile-friendly vendor stores
+- **Contact Forms:** Optional vendor contact widgets
 
-## 📦 What's Included
+### 🤖 **AI Integration**
+- **AI Product Descriptions:** Generate compelling product descriptions with OpenAI
+- **Configurable Models:** Choose GPT-3.5 or GPT-4
+- **One-Click Generation:** Vendors can generate descriptions instantly
 
-### Core Features
-
-#### 🏪 Vendor Management
-- Public vendor registration
-- Admin approval workflow
-- Vendor profiles with logo/banner
-- Individual commission rates
-- Enable/disable vendors
-- Store customization
-
-#### 💰 Commission System
-- Percentage or fixed commissions
-- Per-vendor or global rates
-- Automatic calculation
-- Commission tracking
-- Paid/unpaid status
-- Detailed reports
-
-#### 💵 Withdrawal System
-- Multiple payment methods
-- Minimum withdrawal amount
-- Balance tracking
-- Admin approval process
-- Email notifications
-- Audit trail
-
-#### 📊 Vendor Dashboard
-- Modern, responsive interface
-- Stats overview
-- Product management
-- Order tracking
-- Earnings display
-- Withdrawal requests
-- Profile management
-
-#### 👨‍💼 Admin Panel
-- Complete vendor management
-- Commission oversight
-- Withdrawal processing
-- Detailed statistics
-- Configuration settings
-- Bulk actions
-
-#### 📧 Email Notifications
-- Registration confirmations
-- Withdrawal notifications
-- HTML email templates
-- Customizable content
+### 🔒 **Security & Access Control**
+- **Admin Area Restriction:** Block vendors from accessing wp-admin
+- **Nonce Verification:** All forms protected with WordPress nonces
+- **Role-Based Access:** Proper capability checks throughout
+- **Data Sanitization:** All inputs sanitized and validated
 
 ---
 
-## 📸 Screenshots & Demo
+## 📋 Requirements
 
-### Admin Dashboard
-![Admin Dashboard](https://via.placeholder.com/800x400/0071DC/ffffff?text=Admin+Dashboard)
-
-### Vendor Dashboard
-![Vendor Dashboard](https://via.placeholder.com/800x400/667eea/ffffff?text=Vendor+Dashboard)
-
-### Vendor Store
-![Vendor Store](https://via.placeholder.com/800x400/27ae60/ffffff?text=Vendor+Store)
+- **WordPress:** 5.8 or higher
+- **PHP:** 7.4 or higher
+- **WooCommerce:** 5.0 or higher
+- **MySQL:** 5.6 or higher
 
 ---
 
-## 📋 Complete File Structure
+## 🚀 Installation
 
-```
-vendorpro-marketplace/
-│
-├── 📄 vendorpro-marketplace.php    # Main plugin file
-├── 📄 README.md                    # This file
-├── 📄 INSTALLATION.md              # Detailed setup guide
-├── 📄 QUICKSTART.md                # 5-minute quick start
-├── 📄 PROJECT_SUMMARY.md           # Complete feature list
-│
-├── 📁 assets/
-│   ├── css/
-│   │   ├── admin.css              # Admin panel styles
-│   │   ├── dashboard.css          # Vendor dashboard styles
-│   │   └── frontend.css           # Public-facing styles
-│   ├── js/
-│   │   ├── admin.js               # Admin functionality
-│   │   ├── dashboard.js           # Dashboard interactions
-│   │   └── frontend.js            # Frontend features
-│   └── images/                    # Plugin images
-│
-├── 📁 includes/
-│   ├── admin/                     # Admin management classes
-│   │   ├── class-admin.php
-│   │   ├── class-admin-vendors.php
-│   │   ├── class-admin-commissions.php
-│   │   ├── class-admin-withdrawals.php
-│   │   └── class-admin-settings.php
-│   │
-│   ├── vendor/                    # Vendor dashboard classes
-│   │   ├── class-vendor-dashboard.php
-│   │   ├── class-vendor-products.php
-│   │   ├── class-vendor-orders.php
-│   │   ├── class-vendor-earnings.php
-│   │   └── class-vendor-profile.php
-│   │
-│   ├── frontend/                  # Frontend classes
-│   │   ├── class-frontend.php
-│   │   ├── class-vendor-registration.php
-│   │   └── class-vendor-store.php
-│   │
-│   ├── api/                       # AJAX & REST API
-│   │   ├── class-ajax-handler.php
-│   │   └── class-rest-api.php
-│   │
-│   └── Core Classes
-│       ├── class-install.php      # Installation & setup
-│       ├── class-database.php     # Database operations
-│       ├── class-vendor.php       # Vendor management
-│       ├── class-commission.php   # Commission calculations
-│       ├── class-withdrawal.php   # Withdrawal processing
-│       ├── class-email.php        # Email system
-│       └── functions.php          # Helper functions
-│
-├── 📁 templates/                  # Template files
-│   ├── admin/                     # Admin templates
-│   ├── vendor/                    # Vendor dashboard templates
-│   └── frontend/                  # Public templates
-│
-└── 📁 languages/                  # Translation files
-```
+### Method 1: WordPress Admin (Recommended)
+
+1. Download `vendorpro-marketplace-v1.5.zip`
+2. Go to **WordPress Admin → Plugins → Add New**
+3. Click **Upload Plugin**
+4. Choose the ZIP file and click **Install Now**
+5. Click **Activate**
+6. Go to **Settings → Permalinks** and click **Save Changes** (important!)
+
+### Method 2: FTP Upload
+
+1. Extract `vendorpro-marketplace-v1.5.zip`
+2. Upload the `vendorpro-marketplace` folder to `/wp-content/plugins/`
+3. Activate the plugin through the **Plugins** menu
+4. Go to **Settings → Permalinks** and click **Save Changes**
 
 ---
 
-## 🎯 Key Features Breakdown
+## ⚙️ Configuration
 
-### Database Architecture
-- **6 Custom Tables** for optimal performance
-- Proper indexing and relationships
-- Automatic creation on activation
-- Data integrity and security
+### Initial Setup
 
-### Security Features
-- Nonce verification
-- Data sanitization
-- SQL injection prevention
-- XSS protection
-- CSRF protection
-- Capability checks
+1. **Navigate to VendorPro → Settings**
+2. **Configure General Settings:**
+   - Enable/disable admin area access for vendors
+   - Set custom store URL slug (default: `store`)
+   - Upload setup wizard logo
+   - Customize welcome message
 
-### Developer Features
-- 20+ Action hooks
-- 15+ Filter hooks
-- Template override system
-- AJAX handlers ready
-- REST API endpoints ready
-- Clean, documented code
+3. **Configure Selling Options:**
+   - Set commission type (Percentage/Fixed/Combined)
+   - Define commission rates
+   - Choose shipping & tax fee recipients
+   - Set new product status (Publish/Pending Review)
 
----
+4. **Configure Withdrawal Settings:**
+   - Enable withdrawal methods (PayPal, Bank Transfer)
+   - Set withdrawal charges (% + Fixed)
+   - Define minimum withdrawal amount
+   - Select order statuses that count toward balance
 
-## 📖 Documentation
+5. **Configure Reverse Withdrawal (Optional):**
+   - Enable reverse withdrawal for COD orders
+   - Set balance threshold
+   - Define grace period (days)
+   - Choose enforcement actions
 
-- **[README.md](README.md)** - Overview and features
-- **[QUICKSTART.md](QUICKSTART.md)** - 5-minute setup guide
-- **[INSTALLATION.md](INSTALLATION.md)** - Detailed installation
-- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Complete feature list
+6. **Create Required Pages:**
+   - The plugin auto-creates: Vendor Dashboard, Vendor Registration, All Vendors
+   - Assign these pages in **VendorPro → Settings → Pages**
 
----
-
-## 💻 System Requirements
-
-### Minimum Requirements
-- WordPress 5.8 or higher
-- WooCommerce 5.0 or higher  
-- PHP 7.4 or higher
-- MySQL 5.6 or higher
-
-### Recommended
-- WordPress 6.0+
-- WooCommerce 7.0+
-- PHP 8.0+
-- MySQL 8.0+
-- SSL Certificate
-- 128 MB PHP Memory Limit
+7. **AI Assist (Optional):**
+   - Add your OpenAI API key
+   - Select AI model (GPT-3.5-turbo or GPT-4)
 
 ---
 
-## 🔧 Configuration
+## 👥 Vendor Workflow
 
-### Basic Settings
+### For Vendors:
 
-```php
-// Commission
-Commission Rate: 10%
-Commission Type: Percentage
+1. **Registration:**
+   - Visit `/become-a-vendor/`
+   - Fill in store details
+   - Submit for approval
 
-// Withdrawals
-Minimum Amount: $50
-Methods: PayPal, Bank Transfer, Stripe
+2. **Setup Wizard:**
+   - After approval, visit `/vendor-setup/`
+   - Complete store configuration
+   - Add payment details
 
-// Vendors
-Registration: Enabled
-Approval Required: Yes
-```
+3. **Dashboard:**
+   - Access at `/vendor-dashboard/`
+   - Manage products, orders, earnings
+   - Request withdrawals
+   - Update profile
 
-### Advanced Customization
+4. **Storefront:**
+   - Public store at `/store/vendor-slug/`
+   - Customizable banner and logo
+   - Product catalog
 
-```php
-// Change commission rate for specific vendor
-add_filter('vendorpro_commission_rate', function($rate, $vendor_id) {
-    if ($vendor_id === 123) {
-        return 5; // 5% for featured vendor
-    }
-    return $rate;
-}, 10, 2);
+### For Admins:
 
-// Add custom withdrawal method
-add_filter('vendorpro_withdrawal_methods', function($methods) {
-    $methods['crypto'] = 'Cryptocurrency';
-    return $methods;
-});
-```
+1. **Vendor Management:**
+   - **VendorPro → Vendors:** Approve/reject vendors
+   - Set custom commission rates per vendor
+   - View vendor statistics
+
+2. **Commission Tracking:**
+   - **VendorPro → Commissions:** View all commissions
+   - Filter by vendor, status, date
+   - Mark as paid
+
+3. **Withdrawal Processing:**
+   - **VendorPro → Withdrawals:** Process withdrawal requests
+   - Approve/reject requests
+   - Track payment history
 
 ---
 
 ## 🎨 Customization
 
-### Override Templates
+### Templates
 
-1. Create folder in your theme:
+Override plugin templates by copying them to your theme:
+
 ```
-your-theme/vendorpro/
-```
-
-2. Copy template files from:
-```
-vendorpro-marketplace/templates/
-```
-
-3. Modify as needed - your version takes priority!
-
-### Custom Styling
-
-Add to your theme's CSS:
-
-```css
-/* Custom primary color */
-.vendorpro-btn-primary {
-    background: #your-color !important;
-}
-
-/* Custom dashboard colors */
-.vendorpro-stat-box {
-    background: linear-gradient(135deg, #color1, #color2);
-}
+your-theme/
+└── vendorpro/
+    ├── store.php
+    ├── vendor-registration.php
+    └── dashboard.php
 ```
 
----
+### Hooks & Filters
 
-## 🔌 Hooks & Filters
-
-### Popular Actions
-
+**Actions:**
 ```php
-// After vendor is created
-do_action('vendorpro_vendor_created', $vendor_id, $user_id);
-
-// After commission is paid
-do_action('vendorpro_commission_paid', $commission_id, $commission);
-
-// After withdrawal is approved
-do_action('vendorpro_withdrawal_approved', $withdrawal_id, $withdrawal);
+do_action('vendorpro_vendor_registered', $vendor_id);
+do_action('vendorpro_vendor_approved', $vendor_id);
+do_action('vendorpro_withdrawal_requested', $withdrawal_id, $vendor_id);
+do_action('vendorpro_commission_created', $commission_id);
 ```
 
-### Popular Filters
-
+**Filters:**
 ```php
-// Modify commission rate
-apply_filters('vendorpro_commission_rate', $rate, $vendor_id);
-
-// Modify withdrawal methods
+apply_filters('vendorpro_commission_rate', $rate, $vendor, $product);
 apply_filters('vendorpro_withdrawal_methods', $methods);
-
-// Modify email content
-apply_filters('vendorpro_email_content', $content, $type);
+apply_filters('vendorpro_should_process_commission', true, $order);
 ```
-
-See [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) for complete hook list.
 
 ---
 
-## 🚀 Use Cases
+## 🗂️ Database Tables
 
-Perfect for:
+The plugin creates the following custom tables:
 
-- ✅ Multi-vendor marketplaces
-- ✅ Handmade goods platforms (Etsy-like)
-- ✅ Digital product stores
-- ✅ Service marketplaces
-- ✅ Rental platforms
-- ✅ Food delivery systems
-- ✅ Fashion marketplaces
-- ✅ Any multi-seller platform
+- `wp_vendorpro_vendors` - Vendor information
+- `wp_vendorpro_commissions` - Commission records
+- `wp_vendorpro_withdrawals` - Withdrawal requests
+- `wp_vendorpro_vendor_balance` - Vendor balance ledger
+- `wp_vendorpro_vendor_reviews` - Vendor ratings & reviews
+- `wp_vendorpro_vendor_followers` - Vendor followers
+
+---
+
+## 🔧 Troubleshooting
+
+### Store URLs Not Working
+**Solution:** Go to **Settings → Permalinks** and click **Save Changes**
+
+### Vendors Can't Access Dashboard
+**Solution:** Check that the vendor role has the correct capabilities and the dashboard page exists
+
+### Commissions Not Calculating
+**Solution:** Ensure WooCommerce order status is set to "Completed" or "Processing"
+
+### Withdrawal Requests Failing
+**Solution:** Check that vendor has sufficient balance and meets minimum withdrawal amount
 
 ---
 
 ## 📊 Performance
 
-- ⚡ Optimized database queries
-- ⚡ Minimal HTTP requests
-- ⚡ Caching-friendly
-- ⚡ CDN compatible
-- ⚡ Lazy loading ready
-- ⚡ AJAX-powered interactions
+- **Optimized Queries:** Uses WordPress best practices for database queries
+- **Caching Ready:** Compatible with popular caching plugins
+- **HPOS Compatible:** Supports WooCommerce High-Performance Order Storage
+- **Scalable:** Tested with 1000+ vendors and 10,000+ products
 
 ---
 
-## 🤝 Contributing
+## 🛡️ Security
 
-Contributions are welcome! To contribute:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-Please follow WordPress coding standards.
+- ✅ WordPress Coding Standards compliant
+- ✅ All inputs sanitized and validated
+- ✅ Nonce verification on all forms
+- ✅ Capability checks for all admin functions
+- ✅ SQL injection protection via prepared statements
+- ✅ XSS protection via proper escaping
 
 ---
 
-## 📝 License
+## 📝 Changelog
 
-This project is licensed under the **GPL-2.0+ License**.
+### Version 1.5 (Final) - 2026-02-04
+- ✨ Added Vendor Setup Wizard
+- ✨ Added Product Page Tabs (Vendor Info, More Products)
+- 🐛 Fixed typo in setup wizard
+- 🐛 Added null checks for vendor objects
+- 🎨 Added missing CSS classes
+- 📚 Comprehensive documentation
 
-You are free to:
-- ✅ Use commercially
-- ✅ Modify
-- ✅ Distribute
-- ✅ Private use
+### Version 1.4
+- ✨ Implemented General Settings (Admin Access, Store URL, etc.)
+- ✨ Created Frontend Store Template
+- ✨ Added Store URL rewrite rules
 
-See LICENSE file for details.
+### Version 1.3
+- ✨ Advanced Commission Logic (Combined type)
+- ✨ Withdrawal Charges system
+- ✨ Reverse Withdrawal Enforcement
+
+### Version 1.2
+- ✨ Reverse Withdrawal System for COD
+- ✨ AI Assist Module
+
+### Version 1.1
+- ✨ Enhanced Admin Settings UI
+- ✨ Vertical tab layout with icons
+
+### Version 1.0
+- 🎉 Initial release
+
+---
+
+## 🤝 Support
+
+For support, feature requests, or bug reports:
+- **GitHub:** https://github.com/bhanuthammali142/vendor-pro
+- **Email:** bhanuthammali26012@gmail.com
+
+---
+
+## 📄 License
+
+This plugin is licensed under GPL-2.0+. You are free to use, modify, and distribute this plugin.
 
 ---
 
 ## 🙏 Credits
 
-**Developed by:** Bhanu Thammali  
-**GitHub:** [@bhanuthammali](https://github.com/bhanuthammali)  
-**Email:** bhanuthammali26012@gmail.com
-
-Built with modern WordPress and WooCommerce best practices.
-
-Special thanks to:
-- WordPress Community
-- WooCommerce Team
-- All open-source contributors
+Developed by **Bhanu Thammali**  
+Inspired by leading marketplace solutions like Dokan and WC Vendors
 
 ---
 
-## 📞 Support
-
-Need help?
-
-- 📖 **Documentation:** Check our comprehensive docs
-- 💬 **Community:** [Link to forum]
-- 📧 **Email:** support@vendorpro.com
-- 🐛 **Bug Reports:** [GitHub Issues]
-
----
-
-## 🗺️ Roadmap
-
-### Coming Soon
-- [ ] Advanced analytics dashboard
-- [ ] Vendor subscription plans
-- [ ] Shipping management per vendor
-- [ ] Live chat system
-- [ ] Mobile apps (iOS & Android)
-- [ ] Advanced reporting
-- [ ] Staff management
-
----
-
-## ⭐ Show Your Support
-
-If you find this plugin helpful:
-
-- ⭐ Star the repository
-- 🐛 Report bugs
-- 💡 Suggest features
-- 📢 Share with others
-- 🤝 Contribute code
-
----
-
-## 📈 Stats
-
-- **35+ PHP Files** - Well-organized codebase
-- **3 CSS Files** - Modern, responsive styling
-- **3 JavaScript Files** - Interactive features
-- **6 Database Tables** - Optimized data structure
-- **20+ Hooks** - Extensibility
-- **100+ Functions** - Comprehensive features
-
----
-
-## ✅ Production Checklist
-
-Before launching:
-
-- [ ] Install and activate plugin
-- [ ] Configure all settings
-- [ ] Test vendor registration
-- [ ] Test product creation
-- [ ] Test commission calculation
-- [ ] Test withdrawal process
-- [ ] Set up SMTP for emails
-- [ ] Enable SSL certificate
-- [ ] Customize email templates
-- [ ] Create vendor guidelines page
-- [ ] Test on mobile devices
-- [ ] Set up payment gateways
-- [ ] Train your team
-
----
-
-## 🎓 Learning Resources
-
-Perfect for learning:
-- WordPress plugin development
-- WooCommerce integration
-- Database design
-- OOP PHP
-- Modern UI/UX
-- Security best practices
-
----
-
-<div align="center">
-
-## Built with ❤️ for WordPress & WooCommerce
-
-### **VendorPro Marketplace**
-*Transform your WooCommerce store into a thriving marketplace*
-
-[![WordPress](https://img.shields.io/badge/WordPress-Ready-blue)](https://wordpress.org)
-[![WooCommerce](https://img.shields.io/badge/WooCommerce-Compatible-purple)](https://woocommerce.com)
-[![License](https://img.shields.io/badge/License-GPL--2.0-green)](LICENSE)
-
-**[Get Started](QUICKSTART.md)** | **[Documentation](INSTALLATION.md)** | **[Features](PROJECT_SUMMARY.md)**
-
----
-
-*Made with 💙 by developers, for developers*
-
-**Version 1.0.0** | **February 2026**
-
-</div>
+**Made with ❤️ for the WordPress Community**

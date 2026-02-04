@@ -3,7 +3,7 @@
  * Plugin Name: VendorPro Marketplace
  * Plugin URI: https://vendorpro-marketplace.com
  * Description: A complete multi-vendor marketplace solution for WordPress & WooCommerce. Enable vendors to sell products on your site with commission management, vendor dashboards, and more.
- * Version: 1.0.0
+ * Version: 1.5.0
  * Author: Bhanu Thammali
  * Author URI: https://github.com/bhanuthammali
  * Text Domain: vendorpro
@@ -22,7 +22,7 @@ if (!defined('WPINC')) {
 }
 
 // Define plugin constants
-define('VENDORPRO_VERSION', '1.0.0');
+define('VENDORPRO_VERSION', '1.5.0');
 define('VENDORPRO_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('VENDORPRO_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('VENDORPRO_PLUGIN_BASENAME', plugin_basename(__FILE__));
