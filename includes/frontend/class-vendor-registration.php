@@ -100,6 +100,7 @@ class VendorPro_Vendor_Registration
                 border-radius: 8px;
                 border: 2px solid #e9ecef;
             }
+
             .vendorpro-role-selector label:first-child {
                 display: block;
                 margin-bottom: 12px;
@@ -107,18 +108,22 @@ class VendorPro_Vendor_Registration
                 color: #333;
                 font-size: 15px;
             }
+
             .vendorpro-role-options {
                 display: flex;
                 gap: 20px;
             }
+
             .vendorpro-role-option {
                 flex: 1;
                 position: relative;
             }
+
             .vendorpro-role-option input[type="radio"] {
                 position: absolute;
                 opacity: 0;
             }
+
             .vendorpro-role-option label {
                 display: block;
                 padding: 12px 20px;
@@ -130,14 +135,17 @@ class VendorPro_Vendor_Registration
                 transition: all 0.3s ease;
                 font-weight: 500;
             }
-            .vendorpro-role-option input[type="radio"]:checked + label {
+
+            .vendorpro-role-option input[type="radio"]:checked+label {
                 background: #0071DC;
                 color: white;
                 border-color: #0071DC;
             }
+
             .vendorpro-role-option label:hover {
                 border-color: #0071DC;
             }
+
             .vendorpro-vendor-fields {
                 margin-top: 20px;
                 padding: 20px;
@@ -145,6 +153,7 @@ class VendorPro_Vendor_Registration
                 border-radius: 8px;
                 border: 2px solid #e9ecef;
             }
+
             .vendorpro-vendor-fields h4 {
                 margin: 0 0 15px 0;
                 color: #333;
@@ -152,19 +161,23 @@ class VendorPro_Vendor_Registration
                 padding-bottom: 10px;
                 border-bottom: 2px solid #dee2e6;
             }
+
             .vendorpro-field-row {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 15px;
                 margin-bottom: 15px;
             }
+
             .vendorpro-field-row.full-width {
                 grid-template-columns: 1fr;
             }
+
             .vendorpro-shop-url-wrapper {
                 display: flex;
                 align-items: stretch;
             }
+
             .vendorpro-shop-url-prefix {
                 background: #e9ecef;
                 padding: 0 12px;
@@ -177,25 +190,31 @@ class VendorPro_Vendor_Registration
                 color: #6c757d;
                 white-space: nowrap;
             }
+
             .vendorpro-shop-url-wrapper input {
                 border-radius: 0 4px 4px 0 !important;
                 flex: 1;
             }
+
             #url-status {
                 display: block;
                 margin-top: 5px;
                 font-size: 12px;
             }
+
             #url-status.available {
                 color: #28a745;
             }
+
             #url-status.unavailable {
                 color: #dc3545;
             }
+
             @media (max-width: 768px) {
                 .vendorpro-role-options {
                     flex-direction: column;
                 }
+
                 .vendorpro-field-row {
                     grid-template-columns: 1fr;
                 }
@@ -240,28 +259,31 @@ class VendorPro_Vendor_Registration
             <div class="vendorpro-field-row full-width">
                 <p class="form-row">
                     <label for="shop_name"><?php _e('Shop Name', 'vendorpro'); ?> <span class="required">*</span></label>
-                    <input type="text" class="input-text" name="shop_name" id="shop_name" placeholder="<?php _e('Enter your shop name', 'vendorpro'); ?>" value="<?php if (!empty($_POST['shop_name']))
-                        echo esc_attr($_POST['shop_name']); ?>" />
+                    <input type="text" class="input-text" name="shop_name" id="shop_name"
+                        placeholder="<?php _e('Enter your shop name', 'vendorpro'); ?>" value="<?php if (!empty($_POST['shop_name']))
+                               echo esc_attr($_POST['shop_name']); ?>" />
                 </p>
             </div>
 
             <div class="vendorpro-field-row full-width">
                 <p class="form-row">
                     <label for="shop_url"><?php _e('Shop URL', 'vendorpro'); ?> <span class="required">*</span></label>
-                    <div class="vendorpro-shop-url-wrapper">
-                        <span class="vendorpro-shop-url-prefix"><?php echo home_url('/store/'); ?></span>
-                        <input type="text" class="input-text" name="shop_url" id="shop_url" placeholder="<?php _e('your-shop-name', 'vendorpro'); ?>" value="<?php if (!empty($_POST['shop_url']))
-                            echo esc_attr($_POST['shop_url']); ?>" />
-                    </div>
-                    <small id="url-status"></small>
+                <div class="vendorpro-shop-url-wrapper">
+                    <span class="vendorpro-shop-url-prefix"><?php echo home_url('/store/'); ?></span>
+                    <input type="text" class="input-text" name="shop_url" id="shop_url"
+                        placeholder="<?php _e('your-shop-name', 'vendorpro'); ?>" value="<?php if (!empty($_POST['shop_url']))
+                               echo esc_attr($_POST['shop_url']); ?>" />
+                </div>
+                <small id="url-status"></small>
                 </p>
             </div>
 
             <div class="vendorpro-field-row full-width">
                 <p class="form-row">
                     <label for="shop_phone"><?php _e('Phone Number', 'vendorpro'); ?> <span class="required">*</span></label>
-                    <input type="tel" class="input-text" name="shop_phone" id="shop_phone" placeholder="<?php _e('+1 (555) 123-4567', 'vendorpro'); ?>" value="<?php if (!empty($_POST['shop_phone']))
-                        echo esc_attr($_POST['shop_phone']); ?>" />
+                    <input type="tel" class="input-text" name="shop_phone" id="shop_phone"
+                        placeholder="<?php _e('+1 (555) 123-4567', 'vendorpro'); ?>" value="<?php if (!empty($_POST['shop_phone']))
+                               echo esc_attr($_POST['shop_phone']); ?>" />
                 </p>
             </div>
         </div>
@@ -276,7 +298,7 @@ class VendorPro_Vendor_Registration
                         .replace(/-+/g, '-')
                         .trim();
                     $('#shop_url').val(val);
-                    
+
                     // Show status message
                     if (val.length > 0) {
                         $('#url-status').text('<?php _e('Checking availability...', 'vendorpro'); ?>').removeClass('available unavailable');
@@ -330,7 +352,7 @@ class VendorPro_Vendor_Registration
 
             // Set User Role to Vendor
             $user = new WP_User($user_id);
-            $user->set_role('vendorpro_vendor');
+            $user->set_role('vendor'); // Fixed: Use 'vendor' role that's created in install
 
             // Save basic meta
             update_user_meta($user_id, 'first_name', sanitize_text_field($_POST['first_name']));
@@ -373,8 +395,11 @@ class VendorPro_Vendor_Registration
     public function redirect_to_wizard($redirect_to)
     {
         if (isset($_POST['role']) && $_POST['role'] === 'seller') {
-            // Check if vendor data saved successfully? 
-            // We assume save_vendor_detailsran first.
+            // Store a transient message for the vendor
+            set_transient('vendorpro_new_vendor_' . get_current_user_id(), array(
+                'message' => __('Welcome! Your vendor account has been created successfully.', 'vendorpro'),
+                'dashboard_url' => vendorpro_get_dashboard_url()
+            ), 300); // 5 minutes
 
             // Redirect to Setup Wizard
             return site_url('/vendor-setup/');

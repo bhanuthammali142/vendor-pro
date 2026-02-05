@@ -96,7 +96,7 @@ class VendorPro_Vendor_Setup_Wizard
 
             $step = sanitize_text_field($_POST['vendorpro_setup_step']);
             $user_id = get_current_user_id();
-            $vendor = VendorPro_Vendor::instance()->get_vendor_by_user($user_id);
+            $vendor = VendorPro_Database::instance()->get_vendor_by_user($user_id);
 
             if (!$vendor) {
                 return;

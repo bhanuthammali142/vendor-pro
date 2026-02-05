@@ -1,10 +1,12 @@
 # 🏪 VendorPro Marketplace - Production Ready
 
-**Version:** 1.5 (Final)  
+**Version:** 1.6.1 (Enhanced Error Handling)  
 **Author:** Bhanu Thammali  
 **License:** GPL-2.0+
 
 A complete, production-ready multi-vendor marketplace solution for WordPress & WooCommerce. Transform your WooCommerce store into a thriving marketplace where multiple vendors can sell their products.
+
+> **🆕 Version 1.6.1:** Now includes comprehensive error handling to prevent site crashes from plugin conflicts or missing dependencies. See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for details.
 
 ---
 
@@ -232,17 +234,27 @@ The plugin creates the following custom tables:
 
 ## 🔧 Troubleshooting
 
-### Store URLs Not Working
+> **📖 For comprehensive troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)**
+
+### Common Quick Fixes
+
+#### Store URLs Not Working
 **Solution:** Go to **Settings → Permalinks** and click **Save Changes**
 
-### Vendors Can't Access Dashboard
+#### Critical Error / Plugin Conflict
+**Solution:** See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed conflict resolution steps
+
+#### Vendors Can't Access Dashboard
 **Solution:** Check that the vendor role has the correct capabilities and the dashboard page exists
 
-### Commissions Not Calculating
+#### Commissions Not Calculating
 **Solution:** Ensure WooCommerce order status is set to "Completed" or "Processing"
 
-### Withdrawal Requests Failing
+#### Withdrawal Requests Failing
 **Solution:** Check that vendor has sufficient balance and meets minimum withdrawal amount
+
+#### WooCommerce Required Error
+**Solution:** Install and activate WooCommerce before activating VendorPro Marketplace
 
 ---
 
@@ -267,6 +279,18 @@ The plugin creates the following custom tables:
 ---
 
 ## 📝 Changelog
+
+### Version 1.6.1 - 2026-02-05 ⭐ **Enhanced Error Handling**
+- ✨ **Comprehensive Error Handling:** Safe file loading with existence checks
+- ✨ **Crash Prevention:** Try-catch blocks around all class initialization
+- ✨ **Better Dependency Validation:** PHP, WordPress, and WooCommerce version checks
+- ✨ **Graceful Degradation:** Plugin continues loading even if non-critical components fail
+- ✨ **Improved Error Messages:** User-friendly admin notices with specific error details
+- ✨ **Conflict Resolution:** Better handling of plugin/theme conflicts
+- 🐛 **Fixed:** Fatal errors from missing dependencies
+- 🐛 **Fixed:** White screen of death on activation
+- 🐛 **Fixed:** Plugin conflicts causing site crashes
+- 📚 **Added:** Comprehensive TROUBLESHOOTING.md guide
 
 ### Version 1.5 (Final) - 2026-02-04
 - ✨ Added Vendor Setup Wizard

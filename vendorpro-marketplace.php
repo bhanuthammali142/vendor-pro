@@ -3,7 +3,7 @@
  * Plugin Name: VendorPro Marketplace
  * Plugin URI: https://vendorpro-marketplace.com
  * Description: A complete multi-vendor marketplace solution for WordPress & WooCommerce. Enable vendors to sell products on your site with commission management, vendor dashboards, and more.
- * Version: 1.6.0
+ * Version: 1.6.1
  * Author: Bhanu Thammali
  * Author URI: https://github.com/bhanuthammali
  * Text Domain: vendorpro
@@ -22,7 +22,7 @@ if (!defined('WPINC')) {
 }
 
 // Define plugin constants
-define('VENDORPRO_VERSION', '1.6.0');
+define('VENDORPRO_VERSION', '1.6.1');
 define('VENDORPRO_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('VENDORPRO_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('VENDORPRO_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -42,6 +42,16 @@ final class VendorPro_Marketplace
     protected static $_instance = null;
 
     /**
+     * Stores error messages
+     */
+    private $errors = array();
+
+    /**
+     * Flag to check if dependencies are met
+     */
+    private $dependencies_met = false;
+
+    /**
      * Main VendorPro Instance
      */
     public static function instance()
@@ -58,8 +68,9 @@ final class VendorPro_Marketplace
     public function __construct()
     {
         $this->init_hooks();
-        $this->includes();
-        $this->init_classes();
+
+        // Only load plugin if dependencies are met
+        add_action('plugins_loaded', array($this, 'init_plugin'), 5);
     }
 
     /**
@@ -70,12 +81,38 @@ final class VendorPro_Marketplace
         register_activation_hook(__FILE__, array($this, 'activate'));
         register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 
-        add_action('plugins_loaded', array($this, 'check_dependencies'));
-        add_action('init', array($this, 'init'), 0);
         add_action('admin_notices', array($this, 'admin_notices'));
 
         // Declare WooCommerce HPOS compatibility
         add_action('before_woocommerce_init', array($this, 'declare_wc_compatibility'));
+    }
+
+    /**
+     * Initialize plugin after checking dependencies
+     */
+    public function init_plugin()
+    {
+        // Check dependencies first
+        if (!$this->check_dependencies()) {
+            return;
+        }
+
+        $this->dependencies_met = true;
+
+        // Load plugin files
+        if (!$this->includes()) {
+            $this->add_error('Failed to load required plugin files. Please check file permissions and ensure all plugin files are present.');
+            return;
+        }
+
+        // Initialize classes
+        if (!$this->init_classes()) {
+            $this->add_error('Failed to initialize plugin classes. There may be a conflict with another plugin or theme.');
+            return;
+        }
+
+        // Initialize plugin
+        add_action('init', array($this, 'init'), 0);
     }
 
     /**
@@ -84,8 +121,31 @@ final class VendorPro_Marketplace
     public function declare_wc_compatibility()
     {
         if (class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
-            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
-            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('orders_cache', __FILE__, true);
+            try {
+                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('orders_cache', __FILE__, true);
+            } catch (Exception $e) {
+                // Silently fail - not critical
+            }
+        }
+    }
+
+    /**
+     * Safely include a file
+     */
+    private function safe_include($file)
+    {
+        if (!file_exists($file)) {
+            $this->add_error("Required file not found: " . basename($file));
+            return false;
+        }
+
+        try {
+            require_once $file;
+            return true;
+        } catch (Exception $e) {
+            $this->add_error("Error loading file " . basename($file) . ": " . $e->getMessage());
+            return false;
         }
     }
 
@@ -94,69 +154,151 @@ final class VendorPro_Marketplace
      */
     private function includes()
     {
-        // Core includes
-        require_once VENDORPRO_INCLUDES_DIR . 'class-install.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'class-database.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'class-vendor.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'class-commission.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'class-reverse-withdrawal.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'class-ai-assist.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'class-withdrawal.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'class-email.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'functions.php';
+        $core_files = array(
+            VENDORPRO_INCLUDES_DIR . 'class-install.php',
+            VENDORPRO_INCLUDES_DIR . 'class-database.php',
+            VENDORPRO_INCLUDES_DIR . 'class-vendor.php',
+            VENDORPRO_INCLUDES_DIR . 'class-commission.php',
+            VENDORPRO_INCLUDES_DIR . 'class-reverse-withdrawal.php',
+            VENDORPRO_INCLUDES_DIR . 'class-ai-assist.php',
+            VENDORPRO_INCLUDES_DIR . 'class-withdrawal.php',
+            VENDORPRO_INCLUDES_DIR . 'class-email.php',
+            VENDORPRO_INCLUDES_DIR . 'functions.php',
+        );
+
+        // Load core files
+        foreach ($core_files as $file) {
+            if (!$this->safe_include($file)) {
+                return false;
+            }
+        }
 
         // Admin includes
         if (is_admin()) {
-            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin.php';
-            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-settings.php';
-            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-vendors.php';
-            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-commissions.php';
-            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-withdrawals.php';
-            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-reverse-withdrawal.php';
-            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-modules.php';
-            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-status.php';
-            require_once VENDORPRO_INCLUDES_DIR . 'admin/class-admin-help.php';
+            $admin_files = array(
+                VENDORPRO_INCLUDES_DIR . 'admin/class-admin.php',
+                VENDORPRO_INCLUDES_DIR . 'admin/class-admin-settings.php',
+                VENDORPRO_INCLUDES_DIR . 'admin/class-admin-vendors.php',
+                VENDORPRO_INCLUDES_DIR . 'admin/class-admin-commissions.php',
+                VENDORPRO_INCLUDES_DIR . 'admin/class-admin-withdrawals.php',
+                VENDORPRO_INCLUDES_DIR . 'admin/class-admin-reverse-withdrawal.php',
+                VENDORPRO_INCLUDES_DIR . 'admin/class-admin-modules.php',
+                VENDORPRO_INCLUDES_DIR . 'admin/class-admin-status.php',
+                VENDORPRO_INCLUDES_DIR . 'admin/class-admin-help.php',
+            );
+
+            foreach ($admin_files as $file) {
+                if (!$this->safe_include($file)) {
+                    return false;
+                }
+            }
         }
 
         // Vendor dashboard includes
-        require_once VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-dashboard.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-products.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-orders.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-earnings.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-profile.php';
+        $vendor_files = array(
+            VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-dashboard.php',
+            VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-products.php',
+            VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-orders.php',
+            VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-earnings.php',
+            VENDORPRO_INCLUDES_DIR . 'vendor/class-vendor-profile.php',
+        );
+
+        foreach ($vendor_files as $file) {
+            if (!$this->safe_include($file)) {
+                return false;
+            }
+        }
 
         // Frontend includes
-        require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-frontend.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-registration.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-setup-wizard.php';
+        $frontend_files = array(
+            VENDORPRO_INCLUDES_DIR . 'frontend/class-frontend.php',
+            VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-registration.php',
+            VENDORPRO_INCLUDES_DIR . 'frontend/class-vendor-setup-wizard.php',
+            VENDORPRO_INCLUDES_DIR . 'frontend/class-my-account-menu.php',
+        );
+
+        foreach ($frontend_files as $file) {
+            if (!$this->safe_include($file)) {
+                return false;
+            }
+        }
 
         // API includes
-        require_once VENDORPRO_INCLUDES_DIR . 'api/class-ajax-handler.php';
-        require_once VENDORPRO_INCLUDES_DIR . 'api/class-rest-api.php';
+        $api_files = array(
+            VENDORPRO_INCLUDES_DIR . 'api/class-ajax-handler.php',
+            VENDORPRO_INCLUDES_DIR . 'api/class-rest-api.php',
+        );
+
+        foreach ($api_files as $file) {
+            if (!$this->safe_include($file)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
-     * Initialize classes
+     * Initialize classes with error handling
      */
     private function init_classes()
     {
-        VendorPro_Database::instance();
-        VendorPro_Vendor::instance();
-        VendorPro_Commission::instance();
-        VendorPro_Reverse_Withdrawal::instance();
-        VendorPro_AI_Assist::instance();
-        VendorPro_Withdrawal::instance();
-        VendorPro_Email::instance();
+        $classes = array(
+            'VendorPro_Database',
+            'VendorPro_Vendor',
+            'VendorPro_Commission',
+            'VendorPro_Reverse_Withdrawal',
+            'VendorPro_AI_Assist',
+            'VendorPro_Withdrawal',
+            'VendorPro_Email',
+        );
 
-        if (is_admin()) {
-            VendorPro_Admin::instance();
+        // Initialize core classes
+        foreach ($classes as $class) {
+            if (!class_exists($class)) {
+                $this->add_error("Required class not found: {$class}");
+                return false;
+            }
+
+            try {
+                $class::instance();
+            } catch (Exception $e) {
+                $this->add_error("Error initializing {$class}: " . $e->getMessage());
+                return false;
+            }
         }
 
-        VendorPro_Vendor_Dashboard::instance();
-        VendorPro_Frontend::instance();
-        VendorPro_Vendor_Setup_Wizard::instance();
-        VendorPro_Ajax_Handler::instance();
-        VendorPro_REST_API::instance();
+        // Initialize admin classes
+        if (is_admin()) {
+            if (class_exists('VendorPro_Admin')) {
+                try {
+                    VendorPro_Admin::instance();
+                } catch (Exception $e) {
+                    $this->add_error("Error initializing admin: " . $e->getMessage());
+                }
+            }
+        }
+
+        // Initialize frontend classes
+        $frontend_classes = array(
+            'VendorPro_Vendor_Dashboard',
+            'VendorPro_Frontend',
+            'VendorPro_Vendor_Setup_Wizard',
+            'VendorPro_Ajax_Handler',
+            'VendorPro_REST_API',
+        );
+
+        foreach ($frontend_classes as $class) {
+            if (class_exists($class)) {
+                try {
+                    $class::instance();
+                } catch (Exception $e) {
+                    $this->add_error("Error initializing {$class}: " . $e->getMessage());
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -164,23 +306,40 @@ final class VendorPro_Marketplace
      */
     public function check_dependencies()
     {
-        if (!class_exists('WooCommerce')) {
-            add_action('admin_notices', array($this, 'woocommerce_missing_notice'));
+        // Check PHP version
+        if (version_compare(PHP_VERSION, '7.4', '<')) {
+            $this->add_error('VendorPro Marketplace requires PHP 7.4 or higher. You are running PHP ' . PHP_VERSION);
             return false;
         }
+
+        // Check WordPress version
+        global $wp_version;
+        if (version_compare($wp_version, '5.8', '<')) {
+            $this->add_error('VendorPro Marketplace requires WordPress 5.8 or higher. You are running WordPress ' . $wp_version);
+            return false;
+        }
+
+        // Check WooCommerce
+        if (!class_exists('WooCommerce')) {
+            $this->add_error('VendorPro Marketplace requires WooCommerce to be installed and active. Please install and activate WooCommerce first.');
+            return false;
+        }
+
+        // Check WooCommerce version
+        if (defined('WC_VERSION') && version_compare(WC_VERSION, '5.0', '<')) {
+            $this->add_error('VendorPro Marketplace requires WooCommerce 5.0 or higher. You are running WooCommerce ' . WC_VERSION);
+            return false;
+        }
+
         return true;
     }
 
     /**
-     * WooCommerce missing notice
+     * Add error message
      */
-    public function woocommerce_missing_notice()
+    private function add_error($message)
     {
-        ?>
-        <div class="error">
-            <p><?php esc_html_e('VendorPro Marketplace requires WooCommerce to be installed and active.', 'vendorpro'); ?></p>
-        </div>
-        <?php
+        $this->errors[] = $message;
     }
 
     /**
@@ -188,6 +347,10 @@ final class VendorPro_Marketplace
      */
     public function init()
     {
+        if (!$this->dependencies_met) {
+            return;
+        }
+
         // Set up localization
         load_plugin_textdomain('vendorpro', false, dirname(VENDORPRO_PLUGIN_BASENAME) . '/languages');
 
@@ -222,15 +385,74 @@ final class VendorPro_Marketplace
      */
     public function activate()
     {
-        // Check dependencies
-        if (!class_exists('WooCommerce')) {
+        // Check PHP version
+        if (version_compare(PHP_VERSION, '7.4', '<')) {
             deactivate_plugins(VENDORPRO_PLUGIN_BASENAME);
-            wp_die(esc_html__('VendorPro Marketplace requires WooCommerce to be installed and active.', 'vendorpro'));
+            wp_die(
+                '<h1>Plugin Activation Failed</h1>' .
+                '<p><strong>VendorPro Marketplace</strong> requires PHP 7.4 or higher.</p>' .
+                '<p>You are currently running PHP ' . PHP_VERSION . '</p>' .
+                '<p>Please contact your hosting provider to upgrade PHP.</p>' .
+                '<p><a href="' . admin_url('plugins.php') . '">&laquo; Back to Plugins</a></p>'
+            );
         }
 
-        // Run installation
-        require_once VENDORPRO_INCLUDES_DIR . 'class-install.php';
-        VendorPro_Install::activate();
+        // Check WordPress version
+        global $wp_version;
+        if (version_compare($wp_version, '5.8', '<')) {
+            deactivate_plugins(VENDORPRO_PLUGIN_BASENAME);
+            wp_die(
+                '<h1>Plugin Activation Failed</h1>' .
+                '<p><strong>VendorPro Marketplace</strong> requires WordPress 5.8 or higher.</p>' .
+                '<p>You are currently running WordPress ' . $wp_version . '</p>' .
+                '<p>Please update WordPress to the latest version.</p>' .
+                '<p><a href="' . admin_url('plugins.php') . '">&laquo; Back to Plugins</a></p>'
+            );
+        }
+
+        // Check WooCommerce
+        if (!class_exists('WooCommerce')) {
+            deactivate_plugins(VENDORPRO_PLUGIN_BASENAME);
+            wp_die(
+                '<h1>Plugin Activation Failed</h1>' .
+                '<p><strong>VendorPro Marketplace</strong> requires WooCommerce to be installed and active.</p>' .
+                '<p>Please install and activate WooCommerce before activating this plugin.</p>' .
+                '<p><a href="' . admin_url('plugin-install.php?s=woocommerce&tab=search&type=term') . '">Install WooCommerce</a> | ' .
+                '<a href="' . admin_url('plugins.php') . '">Back to Plugins</a></p>'
+            );
+        }
+
+        // Check WooCommerce version
+        if (defined('WC_VERSION') && version_compare(WC_VERSION, '5.0', '<')) {
+            deactivate_plugins(VENDORPRO_PLUGIN_BASENAME);
+            wp_die(
+                '<h1>Plugin Activation Failed</h1>' .
+                '<p><strong>VendorPro Marketplace</strong> requires WooCommerce 5.0 or higher.</p>' .
+                '<p>You are currently running WooCommerce ' . WC_VERSION . '</p>' .
+                '<p>Please update WooCommerce to the latest version.</p>' .
+                '<p><a href="' . admin_url('plugins.php') . '">&laquo; Back to Plugins</a></p>'
+            );
+        }
+
+        // Run installation with error handling
+        try {
+            $install_file = VENDORPRO_INCLUDES_DIR . 'class-install.php';
+            if (file_exists($install_file)) {
+                require_once $install_file;
+                if (class_exists('VendorPro_Install')) {
+                    VendorPro_Install::activate();
+                }
+            }
+        } catch (Exception $e) {
+            deactivate_plugins(VENDORPRO_PLUGIN_BASENAME);
+            wp_die(
+                '<h1>Plugin Activation Failed</h1>' .
+                '<p><strong>VendorPro Marketplace</strong> encountered an error during activation:</p>' .
+                '<p>' . esc_html($e->getMessage()) . '</p>' .
+                '<p>Please contact support with this error message.</p>' .
+                '<p><a href="' . admin_url('plugins.php') . '">&laquo; Back to Plugins</a></p>'
+            );
+        }
     }
 
     /**
@@ -246,7 +468,28 @@ final class VendorPro_Marketplace
      */
     public function admin_notices()
     {
-        // Add any admin notices here
+        // Display any errors
+        if (!empty($this->errors)) {
+            foreach ($this->errors as $error) {
+                ?>
+                <div class="notice notice-error is-dismissible">
+                    <p><strong>VendorPro Marketplace Error:</strong> <?php echo esc_html($error); ?></p>
+                </div>
+                <?php
+            }
+        }
+
+        // Show helpful notice if plugin is not fully loaded
+        if (!$this->dependencies_met && current_user_can('activate_plugins')) {
+            ?>
+            <div class="notice notice-warning">
+                <p><strong>VendorPro Marketplace</strong> is installed but not fully active. Please check the error messages above
+                    and resolve any issues.</p>
+                <p><em>Tip: If you recently added a cache plugin or made changes, try temporarily renaming the plugin folder to
+                        deactivate it, then rename it back.</em></p>
+            </div>
+            <?php
+        }
     }
 
     /**

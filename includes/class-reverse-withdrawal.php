@@ -52,7 +52,7 @@ class VendorPro_Reverse_Withdrawal
             return;
         }
 
-        $vendor = VendorPro_Vendor::instance()->get_vendor_by_user(get_current_user_id());
+        $vendor = VendorPro_Database::instance()->get_vendor_by_user(get_current_user_id());
         if (!$vendor) {
             return;
         }
@@ -99,7 +99,7 @@ class VendorPro_Reverse_Withdrawal
     public function disable_purchasing_for_vendor_products($purchasable, $product)
     {
         $vendor_id = get_post_field('post_author', $product->get_id());
-        $current_vendor = VendorPro_Vendor::instance()->get_vendor_by_user(get_current_user_id());
+        $current_vendor = VendorPro_Database::instance()->get_vendor_by_user(get_current_user_id());
 
         // Simple check: does this product belong to a vendor who owes money?
         // Optimally we'd check the vendor ID against the "blocked" list we calculated earlier.

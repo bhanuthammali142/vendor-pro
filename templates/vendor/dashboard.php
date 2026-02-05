@@ -23,6 +23,12 @@ $current_page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : 'ove
 
         <!-- Sidebar -->
         <div class="vendorpro-dashboard-sidebar">
+            <!-- Sidebar Header -->
+            <div class="vendorpro-sidebar-header">
+                <h3><?php echo esc_html($vendor->store_name); ?></h3>
+                <p><?php _e('Vendor Dashboard', 'vendorpro'); ?></p>
+            </div>
+
             <ul class="vendorpro-dashboard-nav">
                 <li>
                     <a href="<?php echo vendorpro_get_dashboard_url(); ?>"

@@ -1,51 +1,354 @@
 /**
- * VendorPro Admin Styles
+ * VendorPro Admin Dashboard Styles - Modern UI/UX
+ * Version: 2.0 - Premium Design
  */
 
-/* Layout Wrapper */
-.vendorpro-wrap {
-    max-width: 1200px;
-    margin: 20px 0;
+/* ========================================
+   CSS VARIABLES
+======================================== */
+:root {
+    --vp-admin-primary: #6366f1;
+    --vp-admin-primary-dark: #4f46e5;
+    --vp-admin-success: #10b981;
+    --vp-admin-warning: #f59e0b;
+    --vp-admin-danger: #ef4444;
+    --vp-admin-info: #3b82f6;
+    --vp-admin-dark: #1f2937;
+    --vp-admin-light: #f9fafb;
+    --vp-admin-border: #e5e7eb;
+    --vp-admin-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --vp-admin-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --vp-admin-radius: 12px;
+    --vp-admin-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Header */
-.vendorpro-header {
-    background: #fff;
-    padding: 20px;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* ========================================
+   ADMIN WRAPPER
+======================================== */
+.vendorpro-admin-wrap {
+    margin: 20px 20px 20px 0;
+    padding: 0;
 }
 
-.vendorpro-header h1 {
+/* ========================================
+   ADMIN HEADER
+======================================== */
+.vendorpro-admin-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 40px;
+    border-radius: var(--vp-admin-radius);
+    box-shadow: var(--vp-admin-shadow-lg);
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.vendorpro-admin-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
+.vendorpro-admin-header h1 {
     margin: 0;
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+    z-index: 1;
 }
 
-/* Settings Layout */
+.vendorpro-admin-header p {
+    margin: 10px 0 0;
+    font-size: 16px;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+/* ========================================
+   STATS GRID
+======================================== */
+.vendorpro-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.vendorpro-stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 32px;
+    border-radius: var(--vp-admin-radius);
+    box-shadow: var(--vp-admin-shadow);
+    position: relative;
+    overflow: hidden;
+    transition: var(--vp-admin-transition);
+}
+
+.vendorpro-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--vp-admin-shadow-lg);
+}
+
+/* Animated Background Circle */
+.vendorpro-stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Stat Card Variants */
+.vendorpro-stat-card.success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.vendorpro-stat-card.warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.vendorpro-stat-card.danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.vendorpro-stat-card.info {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.vendorpro-stat-card h3 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    opacity: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+}
+
+.vendorpro-stat-card .stat-value {
+    font-size: 42px;
+    font-weight: 700;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    line-height: 1.2;
+}
+
+/* ========================================
+   QUICK ACTIONS
+======================================== */
+.vendorpro-quick-actions {
+    background: #fff;
+    padding: 32px;
+    border-radius: var(--vp-admin-radius);
+    box-shadow: var(--vp-admin-shadow);
+    margin-bottom: 30px;
+}
+
+.vendorpro-quick-actions h2 {
+    margin: 0 0 24px;
+    font-size: 20px;
+    color: var(--vp-admin-dark);
+    font-weight: 600;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--vp-admin-border);
+}
+
+/* ========================================
+   BUTTONS
+======================================== */
+.vendorpro-btn {
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: var(--vp-admin-transition);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.vendorpro-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.vendorpro-btn:active {
+    transform: translateY(0);
+}
+
+.vendorpro-btn-primary {
+    background: linear-gradient(135deg, var(--vp-admin-primary) 0%, var(--vp-admin-primary-dark) 100%);
+    color: #fff;
+}
+
+.vendorpro-btn-success {
+    background: linear-gradient(135deg, var(--vp-admin-success) 0%, #059669 100%);
+    color: #fff;
+}
+
+.vendorpro-btn-warning {
+    background: linear-gradient(135deg, var(--vp-admin-warning) 0%, #d97706 100%);
+    color: #fff;
+}
+
+.vendorpro-btn-danger {
+    background: linear-gradient(135deg, var(--vp-admin-danger) 0%, #dc2626 100%);
+    color: #fff;
+}
+
+.vendorpro-btn-secondary {
+    background: #fff;
+    color: var(--vp-admin-primary);
+    border: 2px solid var(--vp-admin-primary);
+}
+
+.vendorpro-btn-secondary:hover {
+    background: var(--vp-admin-primary);
+    color: #fff;
+}
+
+/* ========================================
+   TABLES
+======================================== */
+.vendorpro-table {
+    background: #fff;
+    border-radius: var(--vp-admin-radius);
+    box-shadow: var(--vp-admin-shadow);
+    overflow: hidden;
+}
+
+.vendorpro-table h2 {
+    margin: 0;
+    padding: 24px 32px;
+    font-size: 20px;
+    color: var(--vp-admin-dark);
+    font-weight: 600;
+    border-bottom: 2px solid var(--vp-admin-border);
+}
+
+.vendorpro-table table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.vendorpro-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.vendorpro-table th {
+    text-align: left;
+    padding: 16px 24px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.vendorpro-table td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--vp-admin-border);
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.vendorpro-table tbody tr {
+    transition: var(--vp-admin-transition);
+    background: #fff;
+}
+
+.vendorpro-table tbody tr:hover {
+    background: #f9fafb;
+    transform: scale(1.01);
+}
+
+.vendorpro-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ========================================
+   STATUS BADGES
+======================================== */
+.vendorpro-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.vendorpro-status.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.vendorpro-status.approved {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.vendorpro-status.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ========================================
+   SETTINGS LAYOUT
+======================================== */
 .vendorpro-settings-container {
     display: flex;
     gap: 30px;
     align-items: flex-start;
 }
 
-/* Vertical Navigation */
 .vendorpro-settings-nav {
-    width: 260px;
+    width: 280px;
     flex-shrink: 0;
-    background: #fff;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: var(--vp-admin-radius);
+    box-shadow: var(--vp-admin-shadow-lg);
     overflow: hidden;
 }
 
 .vendorpro-settings-nav ul {
     margin: 0;
-    padding: 10px 0;
+    padding: 15px 0;
+    list-style: none;
 }
 
 .vendorpro-settings-nav li {
@@ -55,96 +358,145 @@
 .vendorpro-settings-nav a {
     display: flex;
     align-items: center;
-    padding: 12px 20px;
-    color: #555;
+    padding: 14px 25px;
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     font-weight: 500;
-    border-left: 3px solid transparent;
-    transition: all 0.2s;
+    font-size: 15px;
+    transition: var(--vp-admin-transition);
+    position: relative;
+    gap: 12px;
+}
+
+.vendorpro-settings-nav a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #fff;
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
 }
 
 .vendorpro-settings-nav a .dashicons {
-    margin-right: 12px;
-    color: #a0a5b9;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    opacity: 0.9;
 }
 
-.vendorpro-settings-nav li:hover a {
-    background: #f8f9fa;
-    color: #0071a1;
+.vendorpro-settings-nav a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding-left: 30px;
+}
+
+.vendorpro-settings-nav a:hover::before {
+    transform: scaleY(1);
 }
 
 .vendorpro-settings-nav li.active a {
-    background: #f0f6fc;
-    color: #0071a1;
-    border-left-color: #0071a1;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: 600;
 }
 
-.vendorpro-settings-nav li.active a .dashicons {
-    color: #0071a1;
+.vendorpro-settings-nav li.active a::before {
+    transform: scaleY(1);
 }
 
-/* Settings Content Area */
 .vendorpro-settings-content {
     flex-grow: 1;
     min-width: 0;
-    /* Prevent flex overflow */
 }
 
-/* Card Style */
+/* ========================================
+   CARDS
+======================================== */
 .vendorpro-card {
     background: #fff;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border-radius: var(--vp-admin-radius);
+    box-shadow: var(--vp-admin-shadow);
     overflow: hidden;
+    margin-bottom: 24px;
 }
 
 .vendorpro-card-header {
-    padding: 20px 30px;
-    border-bottom: 1px solid #eee;
+    padding: 24px 32px;
+    border-bottom: 2px solid var(--vp-admin-border);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
 }
 
 .vendorpro-card-header h2 {
-    margin: 0 0 5px 0;
-    font-size: 18px;
-    color: #333;
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    color: var(--vp-admin-dark);
+    font-weight: 600;
 }
 
 .vendorpro-card-header .description {
     margin: 0;
-    color: #666;
+    color: #6b7280;
+    font-size: 14px;
 }
 
 .vendorpro-card-body {
-    padding: 30px;
+    padding: 32px;
 }
 
 .vendorpro-card-footer {
-    padding: 20px 30px;
-    background: #f8f9fa;
-    border-top: 1px solid #eee;
+    padding: 20px 32px;
+    background: #f9fafb;
+    border-top: 1px solid var(--vp-admin-border);
     text-align: right;
 }
 
-/* Feature Intro */
-.vendorpro-feature-intro {
-    background: #f0f6fc;
-    border: 1px solid #cce5ff;
-    padding: 20px;
-    border-radius: 4px;
-    margin-bottom: 20px;
+/* ========================================
+   FORMS
+======================================== */
+.vendorpro-settings-content table.form-table th {
+    padding-left: 0;
+    width: 220px;
+    font-weight: 600;
+    color: var(--vp-admin-dark);
 }
 
-.vendorpro-feature-intro h3 {
-    margin-top: 0;
-    color: #004085;
+.vendorpro-settings-content input[type=text],
+.vendorpro-settings-content input[type=password],
+.vendorpro-settings-content input[type=number],
+.vendorpro-settings-content input[type=email],
+.vendorpro-settings-content select,
+.vendorpro-settings-content textarea {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 16px;
+    border: 2px solid var(--vp-admin-border);
+    border-radius: 8px;
+    font-size: 15px;
+    transition: var(--vp-admin-transition);
 }
 
-/* Toggle Switch (iOS Style) */
+.vendorpro-settings-content input[type=text]:focus,
+.vendorpro-settings-content input[type=password]:focus,
+.vendorpro-settings-content input[type=number]:focus,
+.vendorpro-settings-content input[type=email]:focus,
+.vendorpro-settings-content select:focus,
+.vendorpro-settings-content textarea:focus {
+    border-color: var(--vp-admin-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* ========================================
+   TOGGLE SWITCH
+======================================== */
 .vendorpro-toggle {
     position: relative;
     display: inline-block;
-    width: 44px;
-    height: 24px;
+    width: 52px;
+    height: 28px;
 }
 
 .vendorpro-toggle input {
@@ -160,57 +512,68 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
-    /* Grey by default */
-    transition: .4s;
+    background-color: #cbd5e1;
+    transition: 0.4s;
+    border-radius: 34px;
 }
 
 .slider:before {
     position: absolute;
     content: "";
-    height: 18px;
-    width: 18px;
+    height: 22px;
+    width: 22px;
     left: 3px;
     bottom: 3px;
     background-color: white;
-    transition: .4s;
-}
-
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
+    transition: 0.4s;
     border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Checked State - Blue/Green */
 input:checked+.slider {
-    background-color: #0071a1;
-    /* WordPress Blue */
+    background: linear-gradient(135deg, var(--vp-admin-primary) 0%, var(--vp-admin-primary-dark) 100%);
 }
 
 input:checked+.slider:before {
-    transform: translateX(20px);
+    transform: translateX(24px);
 }
 
-/* Form Styles */
-.vendorpro-settings-content table.form-table th {
-    padding-left: 0;
-    width: 220px;
+/* ========================================
+   FEATURE INTRO
+======================================== */
+.vendorpro-feature-intro {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%);
+    border: 2px solid rgba(99, 102, 241, 0.3);
+    padding: 24px;
+    border-radius: var(--vp-admin-radius);
+    margin-bottom: 24px;
 }
 
-.vendorpro-settings-content input[type=text],
-.vendorpro-settings-content input[type=password],
-.vendorpro-settings-content input[type=number],
-.vendorpro-settings-content select {
-    width: 100%;
-    max-width: 400px;
-    height: 36px;
-    padding: 0 12px;
+.vendorpro-feature-intro h3 {
+    margin-top: 0;
+    color: var(--vp-admin-primary);
+    font-size: 18px;
+    font-weight: 600;
 }
 
-/* Responsive */
+.vendorpro-feature-intro p {
+    margin-bottom: 0;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+/* ========================================
+   ACTIONS
+======================================== */
+.vendorpro-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
 @media screen and (max-width: 782px) {
     .vendorpro-settings-container {
         flex-direction: column;
@@ -223,16 +586,33 @@ input:checked+.slider:before {
     .vendorpro-settings-nav ul {
         display: flex;
         overflow-x: auto;
+        padding: 0;
     }
 
     .vendorpro-settings-nav a {
-        border-left: none;
         border-bottom: 3px solid transparent;
         white-space: nowrap;
     }
 
+    .vendorpro-settings-nav a::before {
+        display: none;
+    }
+
+    .vendorpro-settings-nav a:hover,
     .vendorpro-settings-nav li.active a {
-        border-left: none;
-        border-bottom-color: #0071a1;
+        padding-left: 25px;
+        border-bottom-color: #fff;
+    }
+
+    .vendorpro-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .vendorpro-admin-header h1 {
+        font-size: 24px;
+    }
+
+    .vendorpro-table {
+        overflow-x: auto;
     }
 }
