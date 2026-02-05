@@ -1,0 +1,238 @@
+/**
+ * VendorPro Admin Styles
+ */
+
+/* Layout Wrapper */
+.vendorpro-wrap {
+    max-width: 1200px;
+    margin: 20px 0;
+}
+
+/* Header */
+.vendorpro-header {
+    background: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vendorpro-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Settings Layout */
+.vendorpro-settings-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Vertical Navigation */
+.vendorpro-settings-nav {
+    width: 260px;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.vendorpro-settings-nav ul {
+    margin: 0;
+    padding: 10px 0;
+}
+
+.vendorpro-settings-nav li {
+    margin: 0;
+}
+
+.vendorpro-settings-nav a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.vendorpro-settings-nav a .dashicons {
+    margin-right: 12px;
+    color: #a0a5b9;
+}
+
+.vendorpro-settings-nav li:hover a {
+    background: #f8f9fa;
+    color: #0071a1;
+}
+
+.vendorpro-settings-nav li.active a {
+    background: #f0f6fc;
+    color: #0071a1;
+    border-left-color: #0071a1;
+}
+
+.vendorpro-settings-nav li.active a .dashicons {
+    color: #0071a1;
+}
+
+/* Settings Content Area */
+.vendorpro-settings-content {
+    flex-grow: 1;
+    min-width: 0;
+    /* Prevent flex overflow */
+}
+
+/* Card Style */
+.vendorpro-card {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.vendorpro-card-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.vendorpro-card-header h2 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.vendorpro-card-header .description {
+    margin: 0;
+    color: #666;
+}
+
+.vendorpro-card-body {
+    padding: 30px;
+}
+
+.vendorpro-card-footer {
+    padding: 20px 30px;
+    background: #f8f9fa;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+/* Feature Intro */
+.vendorpro-feature-intro {
+    background: #f0f6fc;
+    border: 1px solid #cce5ff;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.vendorpro-feature-intro h3 {
+    margin-top: 0;
+    color: #004085;
+}
+
+/* Toggle Switch (iOS Style) */
+.vendorpro-toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.vendorpro-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    /* Grey by default */
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Checked State - Blue/Green */
+input:checked+.slider {
+    background-color: #0071a1;
+    /* WordPress Blue */
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
+
+/* Form Styles */
+.vendorpro-settings-content table.form-table th {
+    padding-left: 0;
+    width: 220px;
+}
+
+.vendorpro-settings-content input[type=text],
+.vendorpro-settings-content input[type=password],
+.vendorpro-settings-content input[type=number],
+.vendorpro-settings-content select {
+    width: 100%;
+    max-width: 400px;
+    height: 36px;
+    padding: 0 12px;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .vendorpro-settings-container {
+        flex-direction: column;
+    }
+
+    .vendorpro-settings-nav {
+        width: 100%;
+    }
+
+    .vendorpro-settings-nav ul {
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .vendorpro-settings-nav a {
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        white-space: nowrap;
+    }
+
+    .vendorpro-settings-nav li.active a {
+        border-left: none;
+        border-bottom-color: #0071a1;
+    }
+}

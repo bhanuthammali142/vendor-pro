@@ -1,0 +1,511 @@
+/**
+ * VendorPro Dashboard Styles
+ */
+
+/* Container */
+.vendorpro-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Dashboard Layout */
+.vendorpro-dashboard {
+    display: flex;
+    gap: 30px;
+    margin: 20px 0 40px;
+    min-height: 600px;
+}
+
+.vendorpro-dashboard-sidebar {
+    width: 250px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 30px 0;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.vendorpro-dashboard-content {
+    flex: 1;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+}
+
+/* Sidebar Navigation */
+.vendorpro-dashboard-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.vendorpro-dashboard-nav li {
+    margin: 0;
+}
+
+.vendorpro-dashboard-nav a {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    position: relative;
+    gap: 12px;
+}
+
+.vendorpro-dashboard-nav a .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.vendorpro-dashboard-nav a:hover {
+    background: #f8f9fa;
+    color: #0071DC;
+}
+
+.vendorpro-dashboard-nav a.active {
+    background: linear-gradient(90deg, rgba(0, 113, 220, 0.1) 0%, rgba(0, 113, 220, 0) 100%);
+    color: #0071DC;
+    border-left: 4px solid #0071DC;
+    padding-left: 26px;
+}
+
+.vendorpro-dashboard-nav a.logout-link {
+    color: #dc3545;
+}
+
+.vendorpro-dashboard-nav a.logout-link:hover {
+    background: #fff5f5;
+    color: #c82333;
+}
+
+/* Dashboard Stats */
+.vendorpro-dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.vendorpro-stat-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.vendorpro-stat-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.vendorpro-stat-box.green {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.vendorpro-stat-box.orange {
+    background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+}
+
+.vendorpro-stat-box.red {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+}
+
+.vendorpro-stat-label {
+    font-size: 13px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.vendorpro-stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+/* Dashboard Tables */
+.vendorpro-dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.vendorpro-dashboard-table th {
+    text-align: left;
+    padding: 15px;
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.vendorpro-dashboard-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    color: #666;
+}
+
+.vendorpro-dashboard-table tr:hover {
+    background: #f8f9fa;
+}
+
+/* Dashboard Cards */
+.vendorpro-dashboard-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.vendorpro-dashboard-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.vendorpro-dashboard-card h2 {
+    margin: 0 0 15px;
+    font-size: 24px;
+    color: #333;
+}
+
+.vendorpro-dashboard-card h3 {
+    margin: 0 0 20px;
+    font-size: 20px;
+    color: #333;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Withdrawal Form */
+.vendorpro-withdrawal-form {
+    max-width: 500px;
+}
+
+.vendorpro-balance-display {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.vendorpro-balance-label {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 10px;
+}
+
+.vendorpro-balance-amount {
+    font-size: 48px;
+    font-weight: 700;
+}
+
+/* Product Management */
+.vendorpro-product-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.vendorpro-btn-add {
+    padding: 12px 24px;
+    background: #0071DC;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.vendorpro-btn-add:hover {
+    background: #005bb5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 113, 220, 0.3);
+}
+
+/* Responsive Dashboard */
+@media (max-width: 968px) {
+    .vendorpro-dashboard {
+        flex-direction: column;
+    }
+
+    .vendorpro-dashboard-sidebar {
+        width: 100%;
+        position: static;
+    }
+
+    .vendorpro-dashboard-nav {
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .vendorpro-dashboard-nav li {
+        flex-shrink: 0;
+    }
+
+    .vendorpro-dashboard-nav a {
+        padding: 15px 20px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .vendorpro-dashboard-nav a.active {
+        border-left: none;
+        border-bottom-color: #0071DC;
+    }
+
+    .vendorpro-dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Empty State */
+.vendorpro-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.vendorpro-empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.vendorpro-empty-state h3 {
+    font-size: 24px;
+    margin: 0 0 10px;
+    color: #666;
+}
+
+.vendorpro-empty-state p {
+    font-size: 16px;
+    margin: 0 0 25px;
+}
+
+/* Loading State */
+.vendorpro-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.vendorpro-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #0071DC;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Page Headers */
+.vendorpro-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.vendorpro-page-header h1 {
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+}
+
+.vendorpro-btn-primary {
+    background: #0071DC;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.vendorpro-btn-primary:hover {
+    background: #005bb5;
+    transform: translateY(-2px);
+}
+
+/* Reports Page */
+.vendorpro-date-filter {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.vendorpro-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.vendorpro-metric-card {
+    background: white;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.metric-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.metric-change {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.metric-change.positive {
+    color: #28a745;
+}
+
+.metric-change.negative {
+    color: #dc3545;
+}
+
+/* Orders Page */
+.vendorpro-status-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.vendorpro-status-tabs a {
+    padding: 8px 16px;
+    color: #666;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.vendorpro-status-tabs a.active {
+    background: #0071DC;
+    color: white;
+}
+
+.vendorpro-orders-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.vendorpro-select,
+.vendorpro-form-input,
+.vendorpro-form-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    height: 42px;
+}
+
+/* Settings Form */
+.vendorpro-form-section {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.vendorpro-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.vendorpro-form-input,
+.vendorpro-form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.vendorpro-form-input:focus,
+.vendorpro-form-textarea:focus {
+    border-color: #0071DC;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 113, 220, 0.1);
+}
+
+.vendorpro-form-textarea {
+    resize: vertical;
+}
+
+/* Withdraw Page */
+.payment-methods-list {
+    margin-top: 20px;
+}
+
+.payment-method-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}

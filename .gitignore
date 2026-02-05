@@ -1,0 +1,36 @@
+# Ignore system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build files
+*.zip
+dist/
+build/
+
+# WordPress specific
+wp-config.php
+.htaccess
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*~
